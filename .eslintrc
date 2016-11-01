@@ -1,0 +1,53 @@
+{
+    "parser": "babel-eslint",
+    "extends": [
+        "standard",
+        "standard-react"
+    ],
+    "plugins": [
+        "babel"
+    ],
+    "env": {
+        "browser": true
+    },
+    "globals": {
+    },
+    "rules": {
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 2
+            }
+        ],
+        "indent": [
+            "error",
+            4,
+            { "SwitchCase": 1 }
+        ],
+        "react/jsx-indent": [
+            "error",
+            4
+        ],
+        "react/jsx-indent-props": [
+            "error",
+            4
+        ],
+        "react/prop-types": [
+            1,
+            {
+                "ignore": ["children", "dispatch", "params"]
+            }
+        ],
+        "semi": [
+            2,
+            "never"
+        ],
+        "max-len": [
+            0,
+            180,
+            2
+        ],
+        "generator-star-spacing": 0,
+        "babel/generator-star-spacing": 1
+    }
+}

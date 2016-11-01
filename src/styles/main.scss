@@ -1,0 +1,26 @@
+body {
+  font-family: sans-serif;
+    user-select: none;
+}
+
+.alveole {
+    transform: scale(.1);
+    position: absolute;
+    top: 100px;
+    left: 100px;
+
+    svg {
+        max-height: 100%;
+        max-width: 100%;
+    }
+
+}
+    .alveole__fill {
+        &:hover {
+            fill: red;
+        }
+    }
+
+    .alveole--selected {
+        transform: scale(1);
+    }

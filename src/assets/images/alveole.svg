@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="234px"
+     height="202px"
+     viewBox="0 0 234 202"
+     version="1.1"
+     xmlns="http://www.w3.org/2000/svg">
+    <title>Ruche</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-44.000000, -80.000000)" stroke-width="10" stroke="#979797" fill="#D8D8D8">
+            <polygon transform="translate(160.851252, 181.000000) rotate(-270.000000) translate(-160.851252, -181.000000) "
+                     points="160.851252 70.1487483 256.851252 125.574374 256.851252 236.425626 160.851252 291.851252 64.8512517 236.425626 64.8512517 125.574374"></polygon>
+        </g>
+    </g>
+</svg>
