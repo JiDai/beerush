@@ -1,6 +1,5 @@
 var path = require('path')
 var webpack = require('webpack')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var devServerHost = process.env.WEBPACK_HOST || '0.0.0.0'
 var devServerPort = process.env.WEBPACK_PORT || '3000'
@@ -26,7 +25,6 @@ module.exports = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
-        new ExtractTextPlugin('../dist/style.css')
     ],
     module: {
         loaders: [
@@ -43,9 +41,6 @@ module.exports = {
                 loaders: ['react-hot', 'babel'],
                 exclude: /node_modules/,
                 include: path.join(__dirname, '..', 'src')
-            }, {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
             }, {
                 test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=200000'
             }]

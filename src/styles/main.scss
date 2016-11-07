@@ -3,24 +3,64 @@ body {
     user-select: none;
 }
 
-.alveole {
-    transform: scale(.1);
+.cell {
     position: absolute;
     top: 100px;
     left: 100px;
+    z-index: 1;
 
-    svg {
-        max-height: 100%;
-        max-width: 100%;
-    }
+    @at-root {
+        .cell__fill {
+            max-height: 100%;
+            max-width: 100%;
+            //fill: #CCC;
+        }
 
-}
-    .alveole__fill {
-        &:hover {
-            fill: red;
+        .cell__fill:hover {
+            fill: #74ffff;
+        }
+
+        .cell__border {
+            visibility: hidden;
+            fill: #CCC;
+        }
+
+        .cell__path {
+            fill: #FFF;
+        }
+
+        .cell__path--selected {
+            fill: #C00;
         }
     }
+}
 
-    .alveole--selected {
-        transform: scale(1);
+.cell--start .cell__fill {
+    fill: #000;
+}
+
+.cell--selected {
+    transform: scale(3);
+    z-index: 2;
+
+    .cell__fill {
+        stroke: aqua;
+        stroke-width: 1;
     }
+
+    .cell__border {
+        visibility: visible;
+    }
+
+    .cell__border--selected {
+        fill: green;
+    }
+    .cell__path {
+        visibility: hidden;
+    }
+}
+
+
+.game-area {
+    position: relative;
+}

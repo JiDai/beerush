@@ -1,4 +1,7 @@
-import React, {Component, PropTypes} from 'react';
+import React, {
+    Component
+}
+from 'react'
 import {Link} from 'react-router'
 
 class MainMenu extends Component {
