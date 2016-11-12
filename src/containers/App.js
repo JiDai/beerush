@@ -1,11 +1,5 @@
-/**
- * Created by jd on 26/07/16.
- */
-import React, {
-    Component,
-    PropTypes
-} from 'react'
-
+import React from 'react'
+import Component from 'react/lib/ReactComponent'
 import {connect} from 'react-redux'
 
 
@@ -20,9 +14,4 @@ class App extends Component {
 }
 
 // Link state to props
-export default connect(
-    state => {
-        return {
-        }
-    }
-)(App)
+export default connect()(App)

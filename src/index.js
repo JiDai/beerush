@@ -12,7 +12,7 @@ import thunkMiddleware from 'redux-thunk'
 import App from './containers/App'
 import MainMenu from './containers/MainMenu'
 import Game from './containers/Game'
-import reducer from './reducers'
+import * as reducers from './reducers'
 
 // load styles
 import './styles/main.scss'
@@ -21,7 +21,7 @@ import './styles/main.scss'
 // Add the reducer to your store on the `routing` key
 const store = createStore(
     combineReducers({
-        reducer: reducer,
+        ...reducers,
         routing: routerReducer
     }),
     compose(

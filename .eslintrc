@@ -1,18 +1,44 @@
 {
-    "parser": "babel-eslint",
+    // Extend existing configuration
+    // from ESlint and eslint-plugin-react defaults.
     "extends": [
-        "standard",
-        "standard-react"
+        "eslint:recommended",
+        "plugin:react/recommended"
     ],
-    "plugins": [
-        "babel"
-    ],
+    // In order to use Babel features
+    // you need to enable this custom parser
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
     "env": {
-        "browser": true
+        "browser": true,
+        "node": true
     },
     "globals": {
+        "Promise": true,
+        "DocumentTouch": true
     },
+    // Enable custom plugin known as eslint-plugin-react
+    "plugins": [
+        "babel",
+        "react"
+    ],
     "rules": {
+        // Disable `no-console` rule
+        "no-console": 2,
+        "no-alert": 2,
+        "no-debugger": 2,
+        // Give a warning if identifiers contain underscores
+        "no-underscore-dangle": 2,
+        // Default to single quotes and raise an error if something
+        // else is used
+        "quotes": [
+            2,
+            "single"
+        ],
         "no-multiple-empty-lines": [
             "error",
             {
@@ -22,7 +48,9 @@
         "indent": [
             "error",
             4,
-            { "SwitchCase": 1 }
+            {
+                "SwitchCase": 1
+            }
         ],
         "react/jsx-indent": [
             "error",
@@ -35,7 +63,11 @@
         "react/prop-types": [
             1,
             {
-                "ignore": ["children", "dispatch", "params"]
+                "ignore": [
+                    "children",
+                    "dispatch",
+                    "params"
+                ]
             }
         ],
         "semi": [

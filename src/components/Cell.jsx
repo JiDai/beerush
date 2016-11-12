@@ -1,42 +1,35 @@
-import React, {
-    Component,
-    PropTypes
-} from 'react'
-
+import React from 'react'
+import Component from 'react/lib/ReactComponent'
+import PropTypes from 'react/lib/ReactPropTypes'
 import classNames from 'classnames'
 
-export const CELL_WIDTH = 30
-export const CELL_HEIGHT = 36
+import {
+    CELL_WIDTH,
+    CELL_HEIGHT
+} from '../Constants'
 
 class Cell extends Component {
     constructor () {
         super()
         this.state = {
             edgeSelected: null,
-            pathsSelected: []
+            selected: false
         }
     }
 
     static propTypes = {
-        onMouseDown: PropTypes.func,
         onEdgeSelection: PropTypes.func,
-        onMouseMove: PropTypes.func,
+        validatedPaths: PropTypes.array,
+        selectedPaths: PropTypes.array,
         status: PropTypes.string,
-        selected: PropTypes.bool,
-        pathSelected: PropTypes.string,
         index: PropTypes.number,
         rowIndex: PropTypes.number,
         colIndex: PropTypes.number,
         style: PropTypes.object,
         start: PropTypes.bool
     }
-    onMouseDown = (event) => {
-        if (this.props.onMouseDown) {
-            this.props.onMouseDown(event, this.props.index)
-        }
-    }
 
-    getDirection (rect, posX, posY) {
+    static getDirection (rect, posX, posY) {
         const distX = posX - rect.left - rect.width / 2
         const distY = posY - rect.top - rect.height / 2
         let a = Math.atan2(distY, distX)
@@ -66,49 +59,37 @@ class Cell extends Component {
         return edgeIndex
     }
 
-    addPath (direction) {
-        if(direction === 'w') {
-            direction = 'e'
-        }
-        if(direction === 'ne') {
-            direction = 'sw'
-        }
-        if(direction === 'nw') {
-            direction = 'se'
-        }
-        if (this.state.pathsSelected.indexOf(direction) === -1) {
-            this.setState({
-                pathsSelected: this.state.pathsSelected.concat(direction)
-            })
-            console.log("this.state.pathsSelected : ", this.state.pathsSelected.concat(direction));
-        }
+    onMouseDown = () => {
+        this.setState({
+            selected: true
+        })
     }
 
     onMouseUp = (event) => {
         const rect = event.currentTarget.getBoundingClientRect()
-        const direction = this.getDirection(rect, event.clientX, event.clientY)
+        const direction = Cell.getDirection(rect, event.clientX, event.clientY)
+        this.setState({
+            selected: false
+        })
         if (this.props.onEdgeSelection) {
-            this.props.onEdgeSelection(this.props.index, this.props.rowIndex, this.props.colIndex, direction)
+            this.props.onEdgeSelection(this.props.index, direction)
         }
     }
 
     onMouseMove = (event) => {
         const rect = event.currentTarget.getBoundingClientRect()
-        const direction = this.getDirection(rect, event.clientX, event.clientY)
+        const direction = Cell.getDirection(rect, event.clientX, event.clientY)
         if (direction !== this.setState.edgeSelected) {
             this.setState({
                 edgeSelected: direction
             })
-        }
-        if (this.props.onMouseMove) {
-            this.props.onMouseMove(event, this.props.index)
         }
     }
 
     render () {
         const cellClassName = classNames({
             'cell': true,
-            'cell--selected': this.props.selected,
+            'cell--selected': this.state.selected,
             'cell--start': this.props.start
         })
         return (
@@ -136,9 +117,9 @@ class Cell extends Component {
                             <feComposite operator="over" in="shadow" in2="SourceGraphic" />
                         </filter>
                     </defs>
+
                     <polygon ref="sw"
-                        className={classNames()}
-                        fill="#CCCCCC"
+                        className={classNames('cell__border', 'cell__border--sw', {'cell__border--selected': this.state.edgeSelected === 'sw'})}
                         points="19 41.75 19 39.42 4 30.42 2 31.62 1.94 33.84 16.94 42.84 19 41.75" />
                     <polygon ref="se"
                         className={classNames('cell__border', 'cell__border--se', {'cell__border--selected': this.state.edgeSelected === 'se'})}
@@ -155,18 +136,9 @@ class Cell extends Component {
                     <polygon ref="e"
                         className={classNames('cell__border', 'cell__border--e', {'cell__border--selected': this.state.edgeSelected === 'e'})}
                         points="36 31.62 38 30.42 38 12.4 36 11.2 34 12.4 34 30.42 36 31.62" />
-                    <polygon className="cell__fill" fill="url(#bg)" filter="url(#shadow)"
-                        points="34 30.42 19 39.42 4 30.42 4 12.42 19 3.42 34 12.42 34 30.42" />
 
-                    <polygon
-                        className={classNames('cell__path', 'cell__path--sw', {'cell__path--selected': this.state.pathsSelected.indexOf('sw') >= 0})}
-                        points="19 41.75 19 39.42 4 30.42 2 31.62 1.94 33.84 16.94 42.84 19 41.75" />
-                    <polygon
-                        className={classNames('cell__path', 'cell__path--e', {'cell__path--selected': this.state.pathsSelected.indexOf('e') >= 0})}
-                        points="36 31.62 38 30.42 38 12.4 36 11.2 34 12.4 34 30.42 36 31.62" />
-                    <polygon
-                        className={classNames('cell__path', 'cell__path--se', {'cell__path--selected': this.state.pathsSelected.indexOf('se') >= 0})}
-                        points="19 41.75 19 39.42 34 30.42 36 31.62 36.06 33.84 21.06 42.84 19 41.75" />
+                    <polygon className="cell__fill" fill="url(#bg)" filter="url(#shadow)"
+                        points="15,0 30,8.66 30,15 30,25.98 15,34.64 0,25.98 0,8.66" />
                 </svg>
             </div>
         )

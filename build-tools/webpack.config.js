@@ -27,6 +27,13 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
     ],
     module: {
+        preLoaders: [
+            {
+                test: /\.jsx?$/,
+                loader: 'eslint',
+                include: path.join(__dirname, '..', 'src')
+            }
+        ],
         loaders: [
             {
                 test: /\.(png|gif|jpg|woff|woff2|eot|ttf|svg)$/,
@@ -46,7 +53,10 @@ module.exports = {
             }]
     },
     resolve: {
-        extensions: ['', '.react.js', '.js', '.jsx'],
+        extensions: ['', '.js', '.jsx'],
         modulesDirectories: ['src', 'node_modules', 'styles']
+    },
+    eslint: {
+        configFile: './.eslintrc'
     }
 }

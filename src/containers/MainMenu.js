@@ -1,8 +1,6 @@
-import React, {
-    Component
-}
-from 'react'
-import {Link} from 'react-router'
+import React from 'react'
+import Component from 'react/lib/ReactComponent'
+import Link from 'react-router/lib/Link'
 
 class MainMenu extends Component {
     static propTypes = {}
@@ -15,4 +13,4 @@ class MainMenu extends Component {
     }
 }
 
-export default MainMenu;
+export default MainMenu

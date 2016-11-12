@@ -8,6 +8,7 @@ body {
     top: 100px;
     left: 100px;
     z-index: 1;
+    opacity: .5;
 
     @at-root {
         .cell__fill {
@@ -23,14 +24,6 @@ body {
         .cell__border {
             visibility: hidden;
             fill: #CCC;
-        }
-
-        .cell__path {
-            fill: #FFF;
-        }
-
-        .cell__path--selected {
-            fill: #C00;
         }
     }
 }
@@ -55,7 +48,7 @@ body {
     .cell__border--selected {
         fill: green;
     }
-    .cell__path {
+    .path {
         visibility: hidden;
     }
 }
@@ -63,4 +56,22 @@ body {
 
 .game-area {
     position: relative;
+}
+
+
+.path {
+    position: absolute;
+}
+
+.path__fill {
+    fill: rgba(#FAC, .5);
+}
+
+.path__fill--selected {
+    fill: #C00;
+}
+
+
+.path__fill--validated {
+    fill: #CC0;
 }

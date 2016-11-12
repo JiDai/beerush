@@ -1,139 +1,56 @@
-import React, {Component} from 'react'
+import React from 'react'
+import Component from 'react/lib/ReactComponent'
+import PropTypes from 'react/lib/ReactPropTypes'
+import {connect} from 'react-redux'
 
-import Cell, {CELL_WIDTH, CELL_HEIGHT} from '../components/Cell'
-
-const SPACING = 4
+import {validatePath, unvalidatePath} from '../actions/game'
+import CellGrid from '../components/CellGrid'
+import PathGrid from '../components/PathGrid'
 
 
 class Game extends Component {
+    static propTypes = {
+        selectedPath: PropTypes.object
+    }
+
     constructor () {
         super()
         this.state = {
-            selectedCellIndex: null
+            selectedCellIndex: null,
+            pathValidating: null,
+            waitForPathValidation: false,
         }
     }
 
-    static propTypes = {}
-
-    onMouseDown = (event, index) => {
-        this.setState({
-            selectedCellIndex: index
-        })
+    confirmPath = () => {
+        this.props.dispatch(validatePath())
     }
 
-    onEdgeSelection = (index, rowIndex, colIndex, direction) => {
-        let cellIndex
-        if(['e', 'sw', 'se'].indexOf(direction) >= 0) {
-            cellIndex = index
-        }
-        else if(direction === 'ne') {
-            cellIndex = index - 10
-        }
-        else if(direction === 'nw') {
-            cellIndex = index - 11
-        }
-        else if(direction === 'w') {
-            cellIndex = index - 1
-        }
-        if('cell' + cellIndex in this.refs) {
-            this.refs['cell' + cellIndex].addPath(direction)
-        }
-        this.setState({
-            selectedCellIndex: null
-        })
-    }
-
-    onMouseMove = (event) => {
+    cancelPath = () => {
+        this.props.dispatch(unvalidatePath())
     }
 
     render () {
-        let cells = [
-            [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
-            [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-            [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-            [1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-            [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-            [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-            [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
-        ]
-        let counter = 0
-
-        let h, w, top, left
-        let heights
-        let heightSpaces
-        let topOffset = 0
-        let rowOffset
-        let cell
-        w = CELL_WIDTH + SPACING
-        h = CELL_HEIGHT + SPACING
-
-        const cellList = []
-        cells.forEach((cellRow, rowIndex) => {
-            const rowEven = rowIndex % 2 // 0 ou 1
-            rowOffset = rowEven * w / 2
-
-            cellRow.forEach((activeCell, colIndex) => {
-                if (activeCell === 0) {
-                    return
-                }
-                const colEven = colIndex % 2 // 0 ou 1
-                if (colEven) {
-                    heightSpaces = ((rowIndex + 1) / 2) * (h / 2)
-                    heights = ((rowIndex - 1) / 2) * h
-                    topOffset = colEven * (h / 4)
-                } else {
-                    heightSpaces = (rowIndex / 2) * (h / 2)
-                    heights = (rowIndex / 2) * h
-                    topOffset = 0
-                }
-                top = heights + heightSpaces + topOffset
-                left = (colIndex * w) + rowOffset
-
-                if (activeCell === 2) {
-                    cell = (<Cell
-                        key={counter}
-                        index={counter}
-                        ref={'cell' + counter}
-                        rowIndex={rowIndex}
-                        colIndex={colIndex}
-                        style={{top, left}}
-                        start
-                    />)
-                } else if (activeCell) {
-                    cell = (<Cell
-                        key={counter}
-                        ref={'cell' + counter}
-                        index={counter}
-                        rowIndex={rowIndex}
-                        colIndex={colIndex}
-                        style={{top, left}}
-                        onMouseDown={this.onMouseDown}
-                        onEdgeSelection={this.onEdgeSelection}
-                        onMouseMove={this.onMouseMove}
-                        selected={this.state.selectedCellIndex === counter}
-                        start={false}
-                    />)
-                }
-                cellList.push(cell)
-                counter++
-            })
-        })
-
         return (
             <div>
                 <h1>Jeu</h1>
                 <div className="game-area">
-                    {cellList}
+                    <CellGrid />
+                    <PathGrid />
                 </div>
+                {this.props.selectedPath && <div>
+                    <button onClick={this.confirmPath}>OK ?</button>
+                    <button onClick={this.cancelPath}>No, wait!</button>
+                </div>}
             </div>
         )
     }
 }
 
-export default Game;
+export default connect(
+    state => {
+        return {
+            selectedPath: state.game.selectedPath
+        }
+    }
+)(Game)
