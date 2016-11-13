@@ -1,4 +1,8 @@
 
+// Miniuum pixels to have orientation indecator on cell when moving mouse
+export const MIN_DISTANCE_TO_GET_ORIENTATION = 6
+
+// ANgle to calculate all edges
 export const ANGLE = Math.PI / 6
 
 export const CELL_WIDTH = 30

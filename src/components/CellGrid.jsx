@@ -25,8 +25,8 @@ class CellGrid extends Component {
         this.state = {}
     }
 
-    onEdgeSelection = (index, direction) => {
-        this.props.dispatch(selectEdge(index, direction))
+    onEdgeSelection = (colIndex, rowIndex, orientation) => {
+        this.props.dispatch(selectEdge(colIndex, rowIndex, orientation))
     }
 
     render () {

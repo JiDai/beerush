@@ -14,24 +14,37 @@ import {
 
 class PathGrid extends Component {
     static propTypes = {
-        validatedPaths: PropTypes.array,
-        selectedPath: PropTypes.object
+        selectedPath: PropTypes.object,
+        validatedPaths: PropTypes.array
+    }
+
+    isSelectedPath (colIndex, rowIndex) {
+        if(!this.props.selectedPath) {
+            return
+        }
+        return this.props.selectedPath &&
+            this.props.selectedPath.coordinates[0] === colIndex &&
+            this.props.selectedPath.coordinates[1] === rowIndex
+    }
+
+    isValidatedPath (colIndex, rowIndex) {
+        return this.props.validatedPaths.find(path => {
+            return path.coordinates[0] === colIndex && path.coordinates[1] === rowIndex
+        })
     }
 
     render () {
         let paths = []
-        const selectedPath = this.props.selectedPath
-        const validatedPaths = this.props.validatedPaths
-
         let top, left, counter, rowCell
+
         counter = 0
 
         PATH_MATRIX.forEach((cellRow, rowIndex) => {
             rowCell = Math.floor(rowIndex / 2)
 
             cellRow.forEach((pathType, colIndex) => {
-                left = PATH_WIDTH / 2 + (colIndex * (CELL_WIDTH / 2 + PATH_WIDTH / 2)) - PATH_WIDTH
-                top = ((CELL_EDGES_HEIGHT + CELL_SIDE + PATH_SPACING) * rowCell) - PATH_SPACING
+                left = PATH_WIDTH / 2 + (colIndex * (CELL_WIDTH / 2 + PATH_WIDTH / 2))
+                top = ((CELL_EDGES_HEIGHT + CELL_SIDE + PATH_SPACING) * rowCell)
                 switch (pathType) {
                     case 1 :
                         paths.push(
@@ -44,8 +57,8 @@ class PathGrid extends Component {
                                 viewBox={`0 0 ${18} ${13.9}`}>
                                 <polygon
                                     className={classNames('path__fill', {
-                                        'path__fill--selected': selectedPath && selectedPath.direction === 'sw',
-                                        'path__fill--validated': validatedPaths.indexOf('sw') >= 0
+                                        'path__fill--selected': this.isSelectedPath(colIndex, rowIndex),
+                                        'path__fill--validated': this.isValidatedPath(colIndex, rowIndex)
                                     })}
                                     points="18,12.1 15,13.9 0,5.2 0,1.7 3,0 18,8.7" />
                             </svg>)
@@ -61,8 +74,8 @@ class PathGrid extends Component {
                                 viewBox={`0 0 ${18} ${13.9}`}>
                                 <polygon
                                     className={classNames('path__fill', {
-                                        'path__fill--selected': selectedPath && selectedPath.direction === 'se',
-                                        'path__fill--validated': validatedPaths.indexOf('se') >= 0
+                                        'path__fill--selected': this.isSelectedPath(colIndex, rowIndex),
+                                        'path__fill--validated': this.isValidatedPath(colIndex, rowIndex)
                                     })}
                                     points="0,12.1 0,8.7 15,0 18,1.7 18,5.2 3,13.9" />
                             </svg>)
@@ -80,8 +93,8 @@ class PathGrid extends Component {
                                 viewBox={`0 0 ${6} ${20.8}`}>
                                 <polygon
                                     className={classNames('path__fill', {
-                                        'path__fill--selected': selectedPath && selectedPath.cellIndex === counter && selectedPath.direction === 'e',
-                                        'path__fill--validated': validatedPaths.indexOf('e') >= 0
+                                        'path__fill--selected': this.isSelectedPath(colIndex, rowIndex),
+                                        'path__fill--validated': this.isValidatedPath(colIndex, rowIndex)
                                     })}
                                     points="3,0 6,1.73 6,19.08 3,20.81 0,19.08 0,1.73" />
                             </svg>)

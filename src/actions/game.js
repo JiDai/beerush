@@ -3,27 +3,30 @@ export const UNVALIDATE_PATH = 'UNVALIDATE_PATH'
 export const VALIDATE_PATH = 'VALIDATE_PATH'
 
 
-function selectEdge (index, direction) {
+function selectEdge (colIndex, rowIndex, orientation) {
     return {
         type: SELECT_EDGE,
-        index,
-        direction
+        colIndex,
+        rowIndex,
+        orientation
     }
 }
 
-function unvalidatePath (index, direction) {
+function unvalidatePath (colIndex, rowIndex, orientation) {
     return {
         type: UNVALIDATE_PATH,
-        index,
-        direction
+        colIndex,
+        rowIndex,
+        orientation
     }
 }
 
-function validatePath (index, direction) {
+function validatePath (colIndex, rowIndex, orientation) {
     return {
         type: VALIDATE_PATH,
-        index,
-        direction
+        colIndex,
+        rowIndex,
+        orientation
     }
 }
 

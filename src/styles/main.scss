@@ -1,20 +1,24 @@
 body {
-  font-family: sans-serif;
+    font-family: sans-serif;
     user-select: none;
 }
+
+
+.game-area {
+    position: relative;
+}
+
 
 .cell {
     position: absolute;
     top: 100px;
     left: 100px;
     z-index: 1;
-    opacity: .5;
 
     @at-root {
         .cell__fill {
             max-height: 100%;
             max-width: 100%;
-            //fill: #CCC;
         }
 
         .cell__fill:hover {
@@ -36,11 +40,6 @@ body {
     transform: scale(3);
     z-index: 2;
 
-    .cell__fill {
-        stroke: aqua;
-        stroke-width: 1;
-    }
-
     .cell__border {
         visibility: visible;
     }
@@ -54,23 +53,17 @@ body {
 }
 
 
-.game-area {
-    position: relative;
-}
-
-
 .path {
     position: absolute;
 }
 
 .path__fill {
-    fill: rgba(#FAC, .5);
+    fill: #FFF;
 }
 
 .path__fill--selected {
     fill: #C00;
 }
-
 
 .path__fill--validated {
     fill: #CC0;

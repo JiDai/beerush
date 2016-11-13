@@ -1,3 +1,4 @@
+import {getPathCoordinatesFromCellEdge} from '../helpers/Geometry'
 import {
     SELECT_EDGE,
     UNVALIDATE_PATH,
@@ -16,7 +17,7 @@ function gameReducer (state = initialState, action) {
         case SELECT_EDGE:
             return {
                 ...state,
-                selectedPath: getPathFromCellEdge(action.index, action.direction)
+                selectedPath: getPathCoordinatesFromCellEdge(action.colIndex, action.rowIndex, action.orientation)
             }
         case VALIDATE_PATH:
             return {
@@ -31,25 +32,6 @@ function gameReducer (state = initialState, action) {
             }
         default:
             return state
-    }
-}
-
-function getPathFromCellEdge (index, direction) {
-    let cellIndex
-
-    if (['e', 'sw', 'se'].indexOf(direction) >= 0) {
-        cellIndex = index
-    } else if (direction === 'ne') {
-        cellIndex = index - 10
-    } else if (direction === 'nw') {
-        cellIndex = index - 11
-    } else if (direction === 'w') {
-        cellIndex = index - 1
-    }
-
-    return {
-        cellIndex,
-        direction
     }
 }
 
