@@ -41,14 +41,14 @@ function getOrientation (rect, posX, posY) {
 
 /**
  *
- * @param {Number} colIndex Index in the matrix
- * @param {Number} rowIndex Index in the matrix
+ * @param {Number} cellColIndex Index in the matrix
+ * @param {Number} cellRowIndex Index in the matrix
  * @param {String} orientation Carinal orientation
  * @returns {{cellCoordinates: *[], pathCoordinates: number[]}}
  */
-function getPathCoordinatesFromCellEdge (colIndex, rowIndex, orientation) {
-    const rowIndexEven = rowIndex % 2 === 0
-    let cellCoordinates = [colIndex, rowIndex]
+function getPathCoordinatesFromCellEdge (cellColIndex, cellRowIndex, orientation) {
+    const rowIndexEven = cellRowIndex % 2 === 0
+    let cellCoordinates = [cellColIndex, cellRowIndex]
     let coordinates = [0, 0]
 
     if (orientation === 'ne') {
@@ -87,7 +87,7 @@ function getPathCoordinatesFromCellEdge (colIndex, rowIndex, orientation) {
             ]
             break
         default:
-            throw new Error('Not a valid selected path')
+            throw new Error(`Not a valid selected path ${cellColIndex}, ${cellRowIndex}, ${orientation}`)
     }
 
     return {
@@ -95,6 +95,7 @@ function getPathCoordinatesFromCellEdge (colIndex, rowIndex, orientation) {
         cellCoordinates
     }
 }
+
 
 export {
     getOrientation,

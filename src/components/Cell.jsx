@@ -18,9 +18,9 @@ class Cell extends Component {
             selected: false
         }
     }
-
     static propTypes = {
         onEdgeSelection: PropTypes.func,
+        availableOrientations: PropTypes.array,
         validatedPaths: PropTypes.array,
         selectedPath: PropTypes.object,
         status: PropTypes.string,
@@ -29,6 +29,10 @@ class Cell extends Component {
         rowIndex: PropTypes.number,
         style: PropTypes.object,
         start: PropTypes.bool
+    }
+
+    static defaultProps = {
+        availableOrientations: []
     }
 
     onMouseDown = () => {
@@ -98,27 +102,45 @@ class Cell extends Component {
                     </defs>
 
                     <polygon id="w"
-                        className={classNames('cell__border', 'cell__border--nw', {'cell__border--selected': this.state.edgeSelected === 'w'})}
-                        points="6,31.2 3,32.9 0,31.2 0,13.9 3,12.1 6,13.9 	" />
+                        className={classNames('cell__border', 'cell__border--nw', {
+                            'cell__border--selected': this.state.edgeSelected === 'w',
+                            'cell__border--available': this.props.availableOrientations.indexOf('w') > -1
+                        })}
+                        points="6,31.2 3,32.9 0,31.2 0,13.9 3,12.1 6,13.9" />
                     <polygon id="e"
-                        className={classNames('cell__border', 'cell__border--nw', {'cell__border--selected': this.state.edgeSelected === 'e'})}
-                        points="42,31.2 39,32.9 36,31.2 36,13.9 39,12.1 42,13.9 	" />
+                        className={classNames('cell__border', 'cell__border--nw', {
+                            'cell__border--selected': this.state.edgeSelected === 'e',
+                            'cell__border--available': this.props.availableOrientations.indexOf('e') > -1
+                        })}
+                        points="42,31.2 39,32.9 36,31.2 36,13.9 39,12.1 42,13.9" />
                     <polygon id="nw"
-                        className={classNames('cell__border', 'cell__border--nw', {'cell__border--selected': this.state.edgeSelected === 'nw'})}
-                        points="18,0 21,1.7 21,5.2 6,13.9 3,12.1 3,8.7 	" />
+                        className={classNames('cell__border', 'cell__border--nw', {
+                            'cell__border--selected': this.state.edgeSelected === 'nw',
+                            'cell__border--available': this.props.availableOrientations.indexOf('nw') > -1
+                        })}
+                        points="18,0 21,1.7 21,5.2 6,13.9 3,12.1 3,8.7" />
                     <polygon id="ne"
-                        className={classNames('cell__border', 'cell__border--nw', {'cell__border--selected': this.state.edgeSelected === 'ne'})}
-                        points="24,0 21,1.7 21,5.2 36,13.9 39,12.1 39,8.7 	" />
+                        className={classNames('cell__border', 'cell__border--nw', {
+                            'cell__border--selected': this.state.edgeSelected === 'ne',
+                            'cell__border--available': this.props.availableOrientations.indexOf('ne') > -1
+                        })}
+                        points="24,0 21,1.7 21,5.2 36,13.9 39,12.1 39,8.7" />
                     <polygon id="sw"
-                        className={classNames('cell__border', 'cell__border--nw', {'cell__border--selected': this.state.edgeSelected === 'sw'})}
-                        points="18,45 21,43.3 21,39.8 6,31.2 3,32.9 3,36.4 	" />
+                        className={classNames('cell__border', 'cell__border--nw', {
+                            'cell__border--selected': this.state.edgeSelected === 'sw',
+                            'cell__border--available': this.props.availableOrientations.indexOf('sw') > -1
+                        })}
+                        points="18,45 21,43.3 21,39.8 6,31.2 3,32.9 3,36.4" />
                     <polygon id="se"
-                        className={classNames('cell__border', 'cell__border--nw', {'cell__border--selected': this.state.edgeSelected === 'se'})}
-                        points="24,45 21,43.3 21,39.8 36,31.2 39,32.9 39,36.4 	" />
+                        className={classNames('cell__border', 'cell__border--nw', {
+                            'cell__border--selected': this.state.edgeSelected === 'se',
+                            'cell__border--available': this.props.availableOrientations.indexOf('se') > -1
+                        })}
+                        points="24,45 21,43.3 21,39.8 36,31.2 39,32.9 39,36.4" />
 
 
                     <polygon className="cell__fill" fill="url(#bg)" filter="url(#shadow)"
-                        points="21,5.2 36,13.9 36,20.2 36,31.2 21,39.8 6,31.2 6,13.9 	" />
+                        points="21,5.2 36,13.9 36,20.2 36,31.2 21,39.8 6,31.2 6,13.9" />
 
                 </svg>
             </div>

@@ -3,6 +3,7 @@ import Component from 'react/lib/ReactComponent'
 import PropTypes from 'react/lib/ReactPropTypes'
 import {connect} from 'react-redux'
 
+import {getPathCoordinatesFromCellEdge} from '../helpers/Geometry'
 import {selectEdge} from '../actions/game'
 import Cell from '../components/Cell'
 import {
@@ -17,6 +18,7 @@ import {
 class CellGrid extends Component {
     static propTypes = {
         validatedPaths: PropTypes.array,
+        availablePaths: PropTypes.array,
         selectedPath: PropTypes.object
     }
 
@@ -27,6 +29,20 @@ class CellGrid extends Component {
 
     onEdgeSelection = (colIndex, rowIndex, orientation) => {
         this.props.dispatch(selectEdge(colIndex, rowIndex, orientation))
+    }
+
+    availableOrientations (cellColIndex, cellRowIndex) {
+        const orientations = ['e', 'se', 'sw', 'w', 'nw', 'ne']
+        let availableOrientations = []
+        orientations.forEach(orientation => {
+            const cellPath = getPathCoordinatesFromCellEdge(cellColIndex, cellRowIndex, orientation)
+            this.props.availablePaths.map((path) => {
+                if (path[0] === cellPath.coordinates[0] && path[1] === cellPath.coordinates[1]) {
+                    availableOrientations.push(orientation)
+                }
+            })
+        })
+        return availableOrientations
     }
 
     render () {
@@ -82,6 +98,7 @@ class CellGrid extends Component {
                         colIndex={colIndex}
                         style={{top, left}}
                         onEdgeSelection={this.onEdgeSelection}
+                        availableOrientations={this.availableOrientations(colIndex, rowIndex)}
                         validatedPaths={this.props.validatedPaths}
                         selectedPath={this.props.selectedPath}
                         start={false}
@@ -103,7 +120,8 @@ export default connect(
     state => {
         return {
             validatedPaths: state.game.validatedPaths,
-            selectedPath: state.game.selectedPath
+            selectedPath: state.game.selectedPath,
+            availablePaths: state.game.availablePaths
         }
     }
 )(CellGrid)

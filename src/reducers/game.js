@@ -4,10 +4,12 @@ import {
     UNVALIDATE_PATH,
     VALIDATE_PATH
 } from '../actions/game'
+import {DEFAULT_AVAILABLE_PATH} from '../Constants'
 
 
 const initialState = {
     validatedPaths: [],
+    availablePaths: DEFAULT_AVAILABLE_PATH,
     selectedPath: null
 }
 

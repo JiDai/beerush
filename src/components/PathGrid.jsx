@@ -19,6 +19,7 @@ class PathGrid extends Component {
     }
 
     isSelectedPath (colIndex, rowIndex) {
+        console.log('eslint')
         if(!this.props.selectedPath) {
             return
         }
