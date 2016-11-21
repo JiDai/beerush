@@ -33,7 +33,7 @@ class Game extends Component {
     render () {
         return (
             <div>
-                <h1>Jeu</h1>
+                <h1>BeeRush</h1>
                 <div className="game-area">
                     <CellGrid />
                     <PathGrid />
