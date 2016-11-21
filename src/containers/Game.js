@@ -10,7 +10,8 @@ import PathGrid from '../components/PathGrid'
 
 class Game extends Component {
     static propTypes = {
-        selectedPath: PropTypes.object
+        selectedPath: PropTypes.object,
+        currentPlayer: PropTypes.number
     }
 
     constructor () {
