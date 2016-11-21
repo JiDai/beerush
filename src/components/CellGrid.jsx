@@ -37,7 +37,7 @@ class CellGrid extends Component {
         orientations.forEach(orientation => {
             const cellPath = getPathCoordinatesFromCellEdge(cellColIndex, cellRowIndex, orientation)
             this.props.availablePaths.map((path) => {
-                if (path[0] === cellPath.coordinates[0] && path[1] === cellPath.coordinates[1]) {
+                if (path.row === cellPath.row && path.column === cellPath.column) {
                     availableOrientations.push(orientation)
                 }
             })

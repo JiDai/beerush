@@ -101,6 +101,11 @@ class Cell extends Component {
                         </filter>
                     </defs>
 
+                    <polygon className="cell__fill" fill="url(#bg)" filter="url(#shadow)"
+                        points="21,5.2 36,13.9 36,20.2 36,31.2 21,39.8 6,31.2 6,13.9" />
+
+                    {/*<text x="10" y="25" fontSize={10}>{this.props.colIndex},{this.props.rowIndex}</text>*/}
+
                     <polygon id="w"
                         className={classNames('cell__border', 'cell__border--nw', {
                             'cell__border--selected': this.state.edgeSelected === 'w',
@@ -137,11 +142,6 @@ class Cell extends Component {
                             'cell__border--available': this.props.availableOrientations.indexOf('se') > -1
                         })}
                         points="24,45 21,43.3 21,39.8 36,31.2 39,32.9 39,36.4" />
-
-
-                    <polygon className="cell__fill" fill="url(#bg)" filter="url(#shadow)"
-                        points="21,5.2 36,13.9 36,20.2 36,31.2 21,39.8 6,31.2 6,13.9" />
-
                 </svg>
             </div>
         )

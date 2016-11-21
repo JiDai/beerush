@@ -47,51 +47,54 @@ function getOrientation (rect, posX, posY) {
  * @returns {{cellCoordinates: *[], pathCoordinates: number[]}}
  */
 function getPathCoordinatesFromCellEdge (cellColIndex, cellRowIndex, orientation) {
-    const rowIndexEven = cellRowIndex % 2 === 0
-    let cellCoordinates = [cellColIndex, cellRowIndex]
-    let coordinates = [0, 0]
+    let cellCoordinates = {
+        column: cellColIndex,
+        row: cellRowIndex
+    }
+    let coordinates = {
+        column: 0,
+        row: 0
+    }
 
     if (orientation === 'ne') {
         orientation = 'sw'
-        cellCoordinates[0] = cellCoordinates[0] + (!rowIndexEven ? 1 : 0)
-        cellCoordinates[1] = cellCoordinates[1] - 1
+        cellCoordinates.column = cellCoordinates.column + (cellCoordinates.row % 2)
+        cellCoordinates.row = cellCoordinates.row - 1
     } else if (orientation === 'nw') {
         orientation = 'se'
-        cellCoordinates[0] = cellCoordinates[0] - (rowIndexEven ? 1 : 0)
-        cellCoordinates[1] = cellCoordinates[1] - 1
+        cellCoordinates.column = cellCoordinates.column + (cellCoordinates.row % 2) - 1
+        cellCoordinates.row = cellCoordinates.row - 1
     } else if (orientation === 'w') {
         orientation = 'e'
-        cellCoordinates[0] = cellCoordinates[0] - 1
+        cellCoordinates.column = cellCoordinates.column - 1
     }
 
-    const rowEven = cellCoordinates[1] % 2
+    const rowEven = cellCoordinates.row % 2
     switch (orientation) {
         case 'e':
-            coordinates = [
-                rowEven
-                    ? (cellCoordinates[0] * 2) + 3
-                    : (cellCoordinates[0] + 1) * 2,
-                cellCoordinates[1] * 2 + 1,
-            ]
+            coordinates = {
+                column: cellCoordinates.column * 2 + (rowEven ? 3 : 2),
+                row: cellCoordinates.row * 2 + 1
+            }
             break
         case 'se':
-            coordinates = [
-                cellCoordinates[0] * 2 + 2 - (!rowEven ? 1 : 0),
-                cellCoordinates[1] * 2 + 2,
-            ]
+            coordinates = {
+                column: cellCoordinates.column * 2 + 1 + rowEven,
+                row: cellCoordinates.row * 2 + 2
+            }
             break
         case 'sw':
-            coordinates = [
-                cellCoordinates[0] * 2 + rowEven,
-                (cellCoordinates[1] + 1) * 2,
-            ]
+            coordinates = {
+                column: cellCoordinates.column * 2 + rowEven,
+                row: cellCoordinates.row * 2 + 2
+            }
             break
         default:
             throw new Error(`Not a valid selected path ${cellColIndex}, ${cellRowIndex}, ${orientation}`)
     }
 
     return {
-        coordinates,
+        ...coordinates,
         cellCoordinates
     }
 }

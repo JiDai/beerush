@@ -22,6 +22,9 @@ function gameReducer (state = initialState, action) {
                 selectedPath: getPathCoordinatesFromCellEdge(action.colIndex, action.rowIndex, action.orientation)
             }
         case VALIDATE_PATH:
+            state.availablePaths.find(function () {
+            })
+
             return {
                 ...state,
                 validatedPaths: state.validatedPaths.concat(state.selectedPath),

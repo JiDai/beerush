@@ -1,4 +1,3 @@
-
 // Miniuum pixels to have orientation indecator on cell when moving mouse
 export const MIN_DISTANCE_TO_GET_ORIENTATION = 6
 
@@ -63,10 +62,10 @@ export const PATH_MATRIX = [
 ]
 
 export const DEFAULT_AVAILABLE_PATH = [
-    [11, 11],
-    [9, 12],
-    [12, 12],
-    [9, 14],
-    [12, 14],
-    [11, 15],
+    {column: 11, row: 11},
+    {column: 9, row: 12},
+    {column: 12, row: 12},
+    {column: 9, row: 14},
+    {column: 12, row: 14},
+    {column: 11, row: 15},
 ]

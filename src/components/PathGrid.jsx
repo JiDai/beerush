@@ -14,23 +14,29 @@ import {
 
 class PathGrid extends Component {
     static propTypes = {
+        availablePaths: PropTypes.array,
         selectedPath: PropTypes.object,
         validatedPaths: PropTypes.array
     }
 
+    isAvailablePath (colIndex, rowIndex) {
+        return this.props.availablePaths.find(path => {
+            return path.row === rowIndex && path.column === colIndex
+        })
+    }
+
     isSelectedPath (colIndex, rowIndex) {
-        console.log('eslint')
         if(!this.props.selectedPath) {
             return
         }
         return this.props.selectedPath &&
-            this.props.selectedPath.coordinates[0] === colIndex &&
-            this.props.selectedPath.coordinates[1] === rowIndex
+            this.props.selectedPath.row === rowIndex &&
+            this.props.selectedPath.column === colIndex
     }
 
     isValidatedPath (colIndex, rowIndex) {
         return this.props.validatedPaths.find(path => {
-            return path.coordinates[0] === colIndex && path.coordinates[1] === rowIndex
+            return path.row === rowIndex && path.column === colIndex
         })
     }
 
@@ -58,10 +64,12 @@ class PathGrid extends Component {
                                 viewBox={`0 0 ${18} ${13.9}`}>
                                 <polygon
                                     className={classNames('path__fill', {
+                                        'path__fill--available': this.isAvailablePath(colIndex, rowIndex),
                                         'path__fill--selected': this.isSelectedPath(colIndex, rowIndex),
                                         'path__fill--validated': this.isValidatedPath(colIndex, rowIndex)
                                     })}
                                     points="18,12.1 15,13.9 0,5.2 0,1.7 3,0 18,8.7" />
+                                {/*<text x={3} y={4} transform="rotate(30)" fontSize={6}>{colIndex},<br />{rowIndex}</text>*/}
                             </svg>)
                         break
                     case 2 :
@@ -75,10 +83,12 @@ class PathGrid extends Component {
                                 viewBox={`0 0 ${18} ${13.9}`}>
                                 <polygon
                                     className={classNames('path__fill', {
+                                        'path__fill--available': this.isAvailablePath(colIndex, rowIndex),
                                         'path__fill--selected': this.isSelectedPath(colIndex, rowIndex),
                                         'path__fill--validated': this.isValidatedPath(colIndex, rowIndex)
                                     })}
                                     points="0,12.1 0,8.7 15,0 18,1.7 18,5.2 3,13.9" />
+                                {/*<text x={-4} y={13} transform="rotate(-30)" fontSize={6}>{colIndex},<br />{rowIndex}</text>*/}
                             </svg>)
                         break
                     case 3 :
@@ -94,10 +104,12 @@ class PathGrid extends Component {
                                 viewBox={`0 0 ${6} ${20.8}`}>
                                 <polygon
                                     className={classNames('path__fill', {
+                                        'path__fill--available': this.isAvailablePath(colIndex, rowIndex),
                                         'path__fill--selected': this.isSelectedPath(colIndex, rowIndex),
                                         'path__fill--validated': this.isValidatedPath(colIndex, rowIndex)
                                     })}
                                     points="3,0 6,1.73 6,19.08 3,20.81 0,19.08 0,1.73" />
+                                {/*<text x={0} y={0} width={6} fontSize={6} style={{'whiteSpace': 'normal'}}><tspan x={0} dy="1.2em">{colIndex}</tspan>,<tspan x={0} dy="1.2em">{rowIndex}</tspan></text>*/}
                             </svg>)
                         break
                 }
@@ -112,6 +124,7 @@ class PathGrid extends Component {
 export default connect(
     state => {
         return {
+            availablePaths: state.game.availablePaths,
             validatedPaths: state.game.validatedPaths,
             selectedPath: state.game.selectedPath
         }
