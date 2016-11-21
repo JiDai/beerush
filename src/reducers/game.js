@@ -10,7 +10,8 @@ import {DEFAULT_AVAILABLE_PATH} from '../Constants'
 const initialState = {
     validatedPaths: [],
     availablePaths: DEFAULT_AVAILABLE_PATH,
-    selectedPath: null
+    selectedPath: null,
+    currentPlayer: 1
 }
 
 
@@ -34,9 +35,10 @@ function gameReducer (state = initialState, action) {
 
             return {
                 ...state,
-                validatedPaths: state.validatedPaths.concat(state.selectedPath),
+                validatedPaths: state.validatedPaths.concat({...state.selectedPath, playerId: state.currentPlayer}),
                 availablePaths,
-                selectedPath: null
+                selectedPath: null,
+                currentPlayer: state.currentPlayer === 6 ? 1 : state.currentPlayer + 1
             }
         }
         case UNVALIDATE_PATH:

@@ -34,6 +34,7 @@ class Game extends Component {
         return (
             <div>
                 <h1>BeeRush</h1>
+                <p>Joueur : {this.props.currentPlayer}</p>
                 <div className="game-area">
                     <CellGrid />
                     <PathGrid />
@@ -50,6 +51,7 @@ class Game extends Component {
 export default connect(
     state => {
         return {
+            currentPlayer: state.game.currentPlayer,
             selectedPath: state.game.selectedPath
         }
     }
