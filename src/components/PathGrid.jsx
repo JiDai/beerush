@@ -119,7 +119,6 @@ class PathGrid extends Component {
                                         [`path__fill--validated-by-${validatedPathPlayerId}`]: validatedPath
                                     })}
                                     points="3,0 6,1.73 6,19.08 3,20.81 0,19.08 0,1.73" />
-                                {/*<text x={0} y={0} width={6} fontSize={6} style={{'whiteSpace': 'normal'}}><tspan x={0} dy="1.2em">{colIndex}</tspan>,<tspan x={0} dy="1.2em">{rowIndex}</tspan></text>*/}
                             </svg>)
                         break
                 }

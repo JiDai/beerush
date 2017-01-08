@@ -4,14 +4,18 @@ import {
     UNVALIDATE_PATH,
     VALIDATE_PATH
 } from '../actions/game'
-import {DEFAULT_AVAILABLE_PATH} from '../Constants'
+import {
+    DEFAULT_AVAILABLE_PATH,
+    PLAYERS_COUNT
+} from '../Constants'
 
 
 const initialState = {
     validatedPaths: [],
     availablePaths: DEFAULT_AVAILABLE_PATH,
     selectedPath: null,
-    currentPlayer: 1
+    currentPlayer: 1,
+    round: 1
 }
 
 
@@ -32,13 +36,26 @@ function gameReducer (state = initialState, action) {
             const availablePaths = state.availablePaths.filter(function (path) {
                 return !(path.row === state.selectedPath.row && path.column === state.selectedPath.column)
             })
+            let currentPlayer, round
+            // Next round ?
+            if (state.currentPlayer === PLAYERS_COUNT) {
+                currentPlayer = 1
+                round = state.round + 1
+            }
+            else {
+                currentPlayer = state.currentPlayer + 1
+            }
+            if (round > 1) {
+                // Select all paths from
+            }
 
             return {
                 ...state,
                 validatedPaths: state.validatedPaths.concat({...state.selectedPath, playerId: state.currentPlayer}),
                 availablePaths,
                 selectedPath: null,
-                currentPlayer: state.currentPlayer === 6 ? 1 : state.currentPlayer + 1
+                currentPlayer,
+                round
             }
         }
         case UNVALIDATE_PATH:

@@ -1,3 +1,5 @@
+export const PLAYERS_COUNT = 6
+
 // Miniuum pixels to have orientation indecator on cell when moving mouse
 export const MIN_DISTANCE_TO_GET_ORIENTATION = 6
 
