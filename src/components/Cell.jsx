@@ -3,7 +3,7 @@ import Component from 'react/lib/ReactComponent'
 import PropTypes from 'react/lib/ReactPropTypes'
 import classNames from 'classnames'
 
-import {getOrientation} from '../helpers/Geometry'
+import {getDirection} from '../helpers/Geometry'
 import {
     PATH_WIDTH,
     CELL_WIDTH,
@@ -43,16 +43,16 @@ class Cell extends Component {
 
     onMouseUp = (event) => {
         const rect = event.currentTarget.getBoundingClientRect()
-        const orientation = getOrientation(rect, event.clientX, event.clientY)
+        const direction = getDirection(rect, event.clientX, event.clientY)
         this.setState({
             selected: false,
             edgeSelected: null
         })
-        if (!orientation) {
+        if (!direction) {
             return
         }
         if (this.props.onEdgeSelection) {
-            this.props.onEdgeSelection(this.props.colIndex, this.props.rowIndex, orientation)
+            this.props.onEdgeSelection(this.props.colIndex, this.props.rowIndex, direction)
         }
     }
 
@@ -61,10 +61,10 @@ class Cell extends Component {
             return
         }
         const rect = event.currentTarget.getBoundingClientRect()
-        const orientation = getOrientation(rect, event.clientX, event.clientY)
-        if (orientation !== this.setState.edgeSelected) {
+        const direction = getDirection(rect, event.clientX, event.clientY)
+        if (direction !== this.setState.edgeSelected) {
             this.setState({
-                edgeSelected: orientation
+                edgeSelected: direction
             })
         }
     }
