@@ -1,6 +1,7 @@
 import {
     getPathCoordinatesFromCellEdge,
-    getAdjacentPaths
+    getAllAdjacentPaths,
+    getDefaultAvailablePaths
 } from '../helpers/Geometry'
 import {
     SELECT_EDGE,
@@ -8,14 +9,13 @@ import {
     VALIDATE_PATH
 } from '../actions/game'
 import {
-    DEFAULT_AVAILABLE_PATH,
     PLAYERS_COUNT
 } from '../Constants'
 
 
 const initialState = {
     validatedPaths: [],
-    availablePaths: DEFAULT_AVAILABLE_PATH,
+    availablePaths: getDefaultAvailablePaths(),
     selectedPath: null,
     currentPlayer: 1,
     round: 1
@@ -27,7 +27,7 @@ function gameReducer (state = initialState, action) {
         case SELECT_EDGE: {
             const selectedPath = getPathCoordinatesFromCellEdge(action.colIndex, action.rowIndex, action.direction)
             const selectedPathAvailable = state.availablePaths.find(path => {
-                return path.row === selectedPath.row && path.column === selectedPath.column
+                return path.isEqualTo(selectedPath)
             })
 
             return {
@@ -37,10 +37,12 @@ function gameReducer (state = initialState, action) {
         }
         case VALIDATE_PATH: {
             let availablePaths = state.availablePaths.filter(function (path) {
-                return !(path.row === state.selectedPath.row && path.column === state.selectedPath.column)
+                return !path.isEqualTo(state.selectedPath)
             })
 
-            let validatedPaths = state.validatedPaths.concat({...state.selectedPath, playerId: state.currentPlayer})
+            const selectedPath = state.selectedPath
+            selectedPath.playerId = state.currentPlayer
+            let validatedPaths = state.validatedPaths.concat(selectedPath)
 
             let currentPlayer, round
             // Next round ?
@@ -55,10 +57,15 @@ function gameReducer (state = initialState, action) {
 
             if (round > 1) {
                 // Find last validated path by current player
-                const lastValidatedPathByPlayer = state.validatedPaths.find(function (path) {
+                const lastValidatedPathsByPlayer = state.validatedPaths.filter(function (path) {
                     return currentPlayer === path.playerId
                 })
-                availablePaths = getAdjacentPaths(lastValidatedPathByPlayer)
+                availablePaths = getAllAdjacentPaths(lastValidatedPathsByPlayer)
+                availablePaths = availablePaths.filter(availablePath => {
+                    return !state.validatedPaths.find(function (path) {
+                        return path.isEqualTo(availablePath)
+                    })
+                })
             }
 
             return {

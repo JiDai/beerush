@@ -63,11 +63,15 @@ export const PATH_MATRIX = [
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ]
 
+export const ORIENTATION_VERTICAL = 'vertical'
+export const ORIENTATION_OBLIQUE_UP = 'oblique-up'
+export const ORIENTATION_OBLIQUE_DOWN = 'oblique-down'
+
 export const DEFAULT_AVAILABLE_PATH = [
-    {column: 11, row: 11, orientation: 'vertical'},
-    {column: 9, row: 12, orientation: 'oblique-down'},
-    {column: 12, row: 12, orientation: 'oblique-up'},
-    {column: 9, row: 14, orientation: 'oblique-up'},
-    {column: 12, row: 14, orientation: 'oblique-down'},
-    {column: 11, row: 15, orientation: 'vertical'},
+    {column: 11, row: 11, orientation: ORIENTATION_VERTICAL},
+    {column: 9, row: 12, orientation: ORIENTATION_OBLIQUE_DOWN},
+    {column: 12, row: 12, orientation: ORIENTATION_OBLIQUE_UP},
+    {column: 9, row: 14, orientation: ORIENTATION_OBLIQUE_UP},
+    {column: 12, row: 14, orientation: ORIENTATION_OBLIQUE_DOWN},
+    {column: 11, row: 15, orientation: ORIENTATION_VERTICAL},
 ]

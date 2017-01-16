@@ -1,4 +1,11 @@
-import {MIN_DISTANCE_TO_GET_DIRECTION} from '../Constants'
+import {
+    MIN_DISTANCE_TO_GET_DIRECTION,
+    DEFAULT_AVAILABLE_PATH,
+    ORIENTATION_VERTICAL,
+    ORIENTATION_OBLIQUE_UP,
+    ORIENTATION_OBLIQUE_DOWN,
+} from '../Constants'
+import Path from '../model/Path'
 
 
 /**
@@ -44,7 +51,7 @@ function getDirection (rect, posX, posY) {
  * @param {Number} cellColIndex Index in the matrix
  * @param {Number} cellRowIndex Index in the matrix
  * @param {String} direction Cardinal direction
- * @returns {{cellCoordinates: *[], pathCoordinates: number[]}}
+ * @returns {Path}
  */
 function getPathCoordinatesFromCellEdge (cellColIndex, cellRowIndex, direction) {
     let cellCoordinates = {
@@ -93,13 +100,25 @@ function getPathCoordinatesFromCellEdge (cellColIndex, cellRowIndex, direction) 
             throw new Error(`Not a valid selected path ${cellColIndex}, ${cellRowIndex}, ${direction}`)
     }
 
-    return {
-        ...coordinates,
-        direction,
-        cellCoordinates
-    }
+    const path = new Path(coordinates.column, coordinates.row, getOrienationFromDirection(direction))
+    return path
 }
 
+/**
+ *
+ * @param paths
+ * @returns {Array}
+ */
+function getAllAdjacentPaths (paths) {
+    if (!Array.isArray(paths)) {
+        throw new Error('`paths` must be an array in `getAllAdjacentPaths`')
+    }
+    let allPaths = []
+    paths.forEach(path => {
+        allPaths = allPaths.concat(getAdjacentPaths(path))
+    })
+    return allPaths
+}
 /**
  *
  * @param {Object} path
@@ -108,30 +127,57 @@ function getPathCoordinatesFromCellEdge (cellColIndex, cellRowIndex, direction) 
 function getAdjacentPaths (path) {
     let adjacentPaths = []
     switch (path.orientation) {
-        case 'vertical':
-            adjacentPaths.push({row: path.row - 1, column: path.column - 1})
-            adjacentPaths.push({row: path.row - 1, column: path.column})
-            adjacentPaths.push({row: path.row + 1, column: path.column - 1})
-            adjacentPaths.push({row: path.row + 1, column: path.column})
+        case ORIENTATION_VERTICAL:
+            adjacentPaths.push(new Path(path.column - 1, path.row - 1, ORIENTATION_OBLIQUE_DOWN))
+            adjacentPaths.push(new Path(path.column, path.row - 1, ORIENTATION_OBLIQUE_UP))
+            adjacentPaths.push(new Path(path.column - 1, path.row + 1, ORIENTATION_OBLIQUE_UP))
+            adjacentPaths.push(new Path(path.column, path.row + 1, ORIENTATION_OBLIQUE_DOWN))
             break
-        case 'oblique-up':
-            adjacentPaths.push({row: path.row, column: path.column - 1})
-            adjacentPaths.push({row: path.row + 1, column: path.column})
-            adjacentPaths.push({row: path.row - 1, column: path.column + 1})
-            adjacentPaths.push({row: path.row, column: path.column + 1})
+        case ORIENTATION_OBLIQUE_UP:
+            adjacentPaths.push(new Path(path.column - 1, path.row, ORIENTATION_OBLIQUE_DOWN))
+            adjacentPaths.push(new Path(path.column, path.row + 1, ORIENTATION_VERTICAL))
+            adjacentPaths.push(new Path(path.column + 1, path.row - 1, ORIENTATION_VERTICAL))
+            adjacentPaths.push(new Path(path.column + 1, path.row, ORIENTATION_OBLIQUE_DOWN))
             break
-        case 'oblique-down':
-            adjacentPaths.push({row: path.row - 1, column: path.column})
-            adjacentPaths.push({row: path.row, column: path.column - 1})
-            adjacentPaths.push({row: path.row + 1, column: path.column + 1})
-            adjacentPaths.push({row: path.row, column: path.column + 1})
+        case ORIENTATION_OBLIQUE_DOWN:
+            adjacentPaths.push(new Path(path.column, path.row - 1, ORIENTATION_VERTICAL))
+            adjacentPaths.push(new Path(path.column - 1, path.row, ORIENTATION_OBLIQUE_UP))
+            adjacentPaths.push(new Path(path.column + 1, path.row + 1, ORIENTATION_VERTICAL))
+            adjacentPaths.push(new Path(path.column + 1, path.row, ORIENTATION_OBLIQUE_UP))
             break
+        default:
+            throw new Error('`path.orientation` is not valid : ' + path.orientation)
     }
     return adjacentPaths
+}
+
+function getDefaultAvailablePaths() {
+    return DEFAULT_AVAILABLE_PATH.map(path => new Path(path.column, path.row, path.orientation))
+}
+
+
+/**
+ *
+ * @param direction
+ */
+function getOrienationFromDirection (direction) {
+    switch (direction) {
+        case 'nw':
+        case 'se':
+            return ORIENTATION_OBLIQUE_UP
+        case 'ne':
+        case 'sw':
+            return ORIENTATION_OBLIQUE_DOWN
+        case 'e':
+        case 'w':
+            return ORIENTATION_VERTICAL
+    }
 }
 
 export {
     getDirection,
     getPathCoordinatesFromCellEdge,
+    getDefaultAvailablePaths,
+    getAllAdjacentPaths,
     getAdjacentPaths
 }
