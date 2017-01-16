@@ -15,60 +15,70 @@ body {
     left: 100px;
     z-index: 1;
 
-    @at-root {
-        .cell__fill {
-            max-height: 100%;
-            max-width: 100%;
-        }
-
-        .cell__fill:hover {
-            fill: #74ffff;
-        }
-
-        .cell__border {
-            visibility: hidden;
-            fill: #CCC;
-        }
-    }
-}
-
-.cell--start .cell__fill {
-    fill: #000;
 }
 
 .cell--selected {
     transform: scale(3);
     z-index: 2;
+}
+
+    .cell__fill {
+        max-height: 100%;
+        max-width: 100%;
+
+        .cell--start & {
+            fill: #000;
+        }
+    }
 
     .cell__border {
-        visibility: visible;
-    }
-
-    .cell__border--selected {
-        fill: green;
-    }
-    .path {
         visibility: hidden;
-    }
-}
+        fill: #fff;
 
-.cell__border--available {
-    fill: pink;
-}
+        .cell--selected & {
+            visibility: visible;
+            fill: #ccc;
+        }
+    }
+
+    .cell--selected .cell__border--available {
+        visibility: visible;
+        fill: #3de5d9;
+    }
+
+    .cell--selected .cell__border--selected {
+        visibility: visible;
+        fill: #2ca59c;
+    }
 
 
 .path {
     position: absolute;
+    overflow: visible;
 }
 
-.path__fill {
-    fill: #FFF;
-}
+    .path__fill {
+        fill-opacity: 0;
+    }
 
-.path__fill--selected {
-    fill: #C00;
-}
+    .path__fill--available {
+        fill-opacity: 1;
+        fill: #3de5d9;
+    }
 
-.path__fill--validated {
-    fill: #CC0;
-}
+    .path__fill--selected {
+        fill-opacity: 1;
+        fill: #C00;
+    }
+
+    .path__fill--validated {
+        fill-opacity: 1;
+        fill: #CC0;
+    }
+
+    .path__fill--validated-by-1 { fill: #c000cc; }
+    .path__fill--validated-by-2 { fill: #02cc00; }
+    .path__fill--validated-by-3 { fill: #0019cc; }
+    .path__fill--validated-by-4 { fill: #8c7ecb; }
+    .path__fill--validated-by-5 { fill: #cc7f00; }
+    .path__fill--validated-by-6 { fill: #becc00; }

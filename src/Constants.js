@@ -1,6 +1,7 @@
+export const PLAYERS_COUNT = 6
 
-// Miniuum pixels to have orientation indecator on cell when moving mouse
-export const MIN_DISTANCE_TO_GET_ORIENTATION = 6
+// Miniuum pixels to have direction indecator on cell when moving mouse
+export const MIN_DISTANCE_TO_GET_DIRECTION = 6
 
 // ANgle to calculate all edges
 export const ANGLE = Math.PI / 6
@@ -62,11 +63,15 @@ export const PATH_MATRIX = [
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ]
 
+export const ORIENTATION_VERTICAL = 'vertical'
+export const ORIENTATION_OBLIQUE_UP = 'oblique-up'
+export const ORIENTATION_OBLIQUE_DOWN = 'oblique-down'
+
 export const DEFAULT_AVAILABLE_PATH = [
-    [11, 11],
-    [9, 12],
-    [12, 12],
-    [9, 14],
-    [12, 14],
-    [11, 15],
+    {column: 11, row: 11, orientation: ORIENTATION_VERTICAL},
+    {column: 9, row: 12, orientation: ORIENTATION_OBLIQUE_DOWN},
+    {column: 12, row: 12, orientation: ORIENTATION_OBLIQUE_UP},
+    {column: 9, row: 14, orientation: ORIENTATION_OBLIQUE_UP},
+    {column: 12, row: 14, orientation: ORIENTATION_OBLIQUE_DOWN},
+    {column: 11, row: 15, orientation: ORIENTATION_VERTICAL},
 ]

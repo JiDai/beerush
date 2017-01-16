@@ -10,7 +10,8 @@ import PathGrid from '../components/PathGrid'
 
 class Game extends Component {
     static propTypes = {
-        selectedPath: PropTypes.object
+        selectedPath: PropTypes.object,
+        currentPlayer: PropTypes.number
     }
 
     constructor () {
@@ -33,7 +34,8 @@ class Game extends Component {
     render () {
         return (
             <div>
-                <h1>Jeu</h1>
+                <h1>BeeRush</h1>
+                <p>Joueur : {this.props.currentPlayer}</p>
                 <div className="game-area">
                     <CellGrid />
                     <PathGrid />
@@ -50,6 +52,7 @@ class Game extends Component {
 export default connect(
     state => {
         return {
+            currentPlayer: state.game.currentPlayer,
             selectedPath: state.game.selectedPath
         }
     }

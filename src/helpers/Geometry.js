@@ -1,19 +1,26 @@
-import {MIN_DISTANCE_TO_GET_ORIENTATION} from '../Constants'
+import {
+    MIN_DISTANCE_TO_GET_DIRECTION,
+    DEFAULT_AVAILABLE_PATH,
+    ORIENTATION_VERTICAL,
+    ORIENTATION_OBLIQUE_UP,
+    ORIENTATION_OBLIQUE_DOWN,
+} from '../Constants'
+import Path from '../model/Path'
 
 
 /**
- * Return an edge orientation (cardinal) inside an cell
+ * Return an edge direction (cardinal) inside an cell
  * @param {Object} rect Component rect wrapping the cell
- * @param {Number} posX The position X to get orientation from (MouseX)
- * @param {Number} posY The position Y to get orientation from (MouseY)
+ * @param {Number} posX The position X to get direction from (MouseX)
+ * @param {Number} posY The position Y to get direction from (MouseY)
  * @returns {String|undefined}
  */
-function getOrientation (rect, posX, posY) {
+function getDirection (rect, posX, posY) {
     const distX = posX - rect.left - rect.width / 2
     const distY = posY - rect.top - rect.height / 2
     let a = Math.atan2(distY, distX)
     let edgeIndex
-    if (Math.abs(distX) < MIN_DISTANCE_TO_GET_ORIENTATION && Math.abs(distY) < MIN_DISTANCE_TO_GET_ORIENTATION) {
+    if (Math.abs(distX) < MIN_DISTANCE_TO_GET_DIRECTION && Math.abs(distY) < MIN_DISTANCE_TO_GET_DIRECTION) {
         // gesture not enough significant
         return
     }
@@ -43,61 +50,134 @@ function getOrientation (rect, posX, posY) {
  *
  * @param {Number} cellColIndex Index in the matrix
  * @param {Number} cellRowIndex Index in the matrix
- * @param {String} orientation Carinal orientation
- * @returns {{cellCoordinates: *[], pathCoordinates: number[]}}
+ * @param {String} direction Cardinal direction
+ * @returns {Path}
  */
-function getPathCoordinatesFromCellEdge (cellColIndex, cellRowIndex, orientation) {
-    const rowIndexEven = cellRowIndex % 2 === 0
-    let cellCoordinates = [cellColIndex, cellRowIndex]
-    let coordinates = [0, 0]
-
-    if (orientation === 'ne') {
-        orientation = 'sw'
-        cellCoordinates[0] = cellCoordinates[0] + (!rowIndexEven ? 1 : 0)
-        cellCoordinates[1] = cellCoordinates[1] - 1
-    } else if (orientation === 'nw') {
-        orientation = 'se'
-        cellCoordinates[0] = cellCoordinates[0] - (rowIndexEven ? 1 : 0)
-        cellCoordinates[1] = cellCoordinates[1] - 1
-    } else if (orientation === 'w') {
-        orientation = 'e'
-        cellCoordinates[0] = cellCoordinates[0] - 1
+function getPathCoordinatesFromCellEdge (cellColIndex, cellRowIndex, direction) {
+    let cellCoordinates = {
+        column: cellColIndex,
+        row: cellRowIndex
+    }
+    let coordinates = {
+        column: 0,
+        row: 0
     }
 
-    const rowEven = cellCoordinates[1] % 2
-    switch (orientation) {
+    if (direction === 'ne') {
+        direction = 'sw'
+        cellCoordinates.column = cellCoordinates.column + (cellCoordinates.row % 2)
+        cellCoordinates.row = cellCoordinates.row - 1
+    } else if (direction === 'nw') {
+        direction = 'se'
+        cellCoordinates.column = cellCoordinates.column + (cellCoordinates.row % 2) - 1
+        cellCoordinates.row = cellCoordinates.row - 1
+    } else if (direction === 'w') {
+        direction = 'e'
+        cellCoordinates.column = cellCoordinates.column - 1
+    }
+
+    const rowEven = cellCoordinates.row % 2
+    switch (direction) {
         case 'e':
-            coordinates = [
-                rowEven
-                    ? (cellCoordinates[0] * 2) + 3
-                    : (cellCoordinates[0] + 1) * 2,
-                cellCoordinates[1] * 2 + 1,
-            ]
+            coordinates = {
+                column: cellCoordinates.column * 2 + (rowEven ? 3 : 2),
+                row: cellCoordinates.row * 2 + 1
+            }
             break
         case 'se':
-            coordinates = [
-                cellCoordinates[0] * 2 + 2 - (!rowEven ? 1 : 0),
-                cellCoordinates[1] * 2 + 2,
-            ]
+            coordinates = {
+                column: cellCoordinates.column * 2 + 1 + rowEven,
+                row: cellCoordinates.row * 2 + 2
+            }
             break
         case 'sw':
-            coordinates = [
-                cellCoordinates[0] * 2 + rowEven,
-                (cellCoordinates[1] + 1) * 2,
-            ]
+            coordinates = {
+                column: cellCoordinates.column * 2 + rowEven,
+                row: cellCoordinates.row * 2 + 2
+            }
             break
         default:
-            throw new Error(`Not a valid selected path ${cellColIndex}, ${cellRowIndex}, ${orientation}`)
+            throw new Error(`Not a valid selected path ${cellColIndex}, ${cellRowIndex}, ${direction}`)
     }
 
-    return {
-        coordinates,
-        cellCoordinates
+    const path = new Path(coordinates.column, coordinates.row, getOrienationFromDirection(direction))
+    return path
+}
+
+/**
+ *
+ * @param paths
+ * @returns {Array}
+ */
+function getAllAdjacentPaths (paths) {
+    if (!Array.isArray(paths)) {
+        throw new Error('`paths` must be an array in `getAllAdjacentPaths`')
     }
+    let allPaths = []
+    paths.forEach(path => {
+        allPaths = allPaths.concat(getAdjacentPaths(path))
+    })
+    return allPaths
+}
+/**
+ *
+ * @param {Object} path
+ * @returns {Array}
+ */
+function getAdjacentPaths (path) {
+    let adjacentPaths = []
+    switch (path.orientation) {
+        case ORIENTATION_VERTICAL:
+            adjacentPaths.push(new Path(path.column - 1, path.row - 1, ORIENTATION_OBLIQUE_DOWN))
+            adjacentPaths.push(new Path(path.column, path.row - 1, ORIENTATION_OBLIQUE_UP))
+            adjacentPaths.push(new Path(path.column - 1, path.row + 1, ORIENTATION_OBLIQUE_UP))
+            adjacentPaths.push(new Path(path.column, path.row + 1, ORIENTATION_OBLIQUE_DOWN))
+            break
+        case ORIENTATION_OBLIQUE_UP:
+            adjacentPaths.push(new Path(path.column - 1, path.row, ORIENTATION_OBLIQUE_DOWN))
+            adjacentPaths.push(new Path(path.column, path.row + 1, ORIENTATION_VERTICAL))
+            adjacentPaths.push(new Path(path.column + 1, path.row - 1, ORIENTATION_VERTICAL))
+            adjacentPaths.push(new Path(path.column + 1, path.row, ORIENTATION_OBLIQUE_DOWN))
+            break
+        case ORIENTATION_OBLIQUE_DOWN:
+            adjacentPaths.push(new Path(path.column, path.row - 1, ORIENTATION_VERTICAL))
+            adjacentPaths.push(new Path(path.column - 1, path.row, ORIENTATION_OBLIQUE_UP))
+            adjacentPaths.push(new Path(path.column + 1, path.row + 1, ORIENTATION_VERTICAL))
+            adjacentPaths.push(new Path(path.column + 1, path.row, ORIENTATION_OBLIQUE_UP))
+            break
+        default:
+            throw new Error('`path.orientation` is not valid : ' + path.orientation)
+    }
+    return adjacentPaths
+}
+
+function getDefaultAvailablePaths() {
+    return DEFAULT_AVAILABLE_PATH.map(path => new Path(path.column, path.row, path.orientation))
 }
 
 
+/**
+ *
+ * @param direction
+ */
+function getOrienationFromDirection (direction) {
+    switch (direction) {
+        case 'nw':
+        case 'se':
+            return ORIENTATION_OBLIQUE_UP
+        case 'ne':
+        case 'sw':
+            return ORIENTATION_OBLIQUE_DOWN
+        case 'e':
+        case 'w':
+            return ORIENTATION_VERTICAL
+    }
+}
+
 export {
-    getOrientation,
-    getPathCoordinatesFromCellEdge
+    getDirection,
+    getPathCoordinatesFromCellEdge,
+    getDefaultAvailablePaths,
+    getAllAdjacentPaths,
+    getAdjacentPaths
 }

@@ -27,18 +27,18 @@ class CellGrid extends Component {
         this.state = {}
     }
 
-    onEdgeSelection = (colIndex, rowIndex, orientation) => {
-        this.props.dispatch(selectEdge(colIndex, rowIndex, orientation))
+    onEdgeSelection = (colIndex, rowIndex, direction) => {
+        this.props.dispatch(selectEdge(colIndex, rowIndex, direction))
     }
 
     availableOrientations (cellColIndex, cellRowIndex) {
-        const orientations = ['e', 'se', 'sw', 'w', 'nw', 'ne']
+        const directions = ['e', 'se', 'sw', 'w', 'nw', 'ne']
         let availableOrientations = []
-        orientations.forEach(orientation => {
-            const cellPath = getPathCoordinatesFromCellEdge(cellColIndex, cellRowIndex, orientation)
+        directions.forEach(direction => {
+            const cellPath = getPathCoordinatesFromCellEdge(cellColIndex, cellRowIndex, direction)
             this.props.availablePaths.map((path) => {
-                if (path[0] === cellPath.coordinates[0] && path[1] === cellPath.coordinates[1]) {
-                    availableOrientations.push(orientation)
+                if (path.row === cellPath.row && path.column === cellPath.column) {
+                    availableOrientations.push(direction)
                 }
             })
         })

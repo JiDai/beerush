@@ -3,7 +3,7 @@ import Component from 'react/lib/ReactComponent'
 import PropTypes from 'react/lib/ReactPropTypes'
 import classNames from 'classnames'
 
-import {getOrientation} from '../helpers/Geometry'
+import {getDirection} from '../helpers/Geometry'
 import {
     PATH_WIDTH,
     CELL_WIDTH,
@@ -43,16 +43,16 @@ class Cell extends Component {
 
     onMouseUp = (event) => {
         const rect = event.currentTarget.getBoundingClientRect()
-        const orientation = getOrientation(rect, event.clientX, event.clientY)
+        const direction = getDirection(rect, event.clientX, event.clientY)
         this.setState({
             selected: false,
             edgeSelected: null
         })
-        if (!orientation) {
+        if (!direction) {
             return
         }
         if (this.props.onEdgeSelection) {
-            this.props.onEdgeSelection(this.props.colIndex, this.props.rowIndex, orientation)
+            this.props.onEdgeSelection(this.props.colIndex, this.props.rowIndex, direction)
         }
     }
 
@@ -61,10 +61,10 @@ class Cell extends Component {
             return
         }
         const rect = event.currentTarget.getBoundingClientRect()
-        const orientation = getOrientation(rect, event.clientX, event.clientY)
-        if (orientation !== this.setState.edgeSelected) {
+        const direction = getDirection(rect, event.clientX, event.clientY)
+        if (direction !== this.setState.edgeSelected) {
             this.setState({
-                edgeSelected: orientation
+                edgeSelected: direction
             })
         }
     }
@@ -100,6 +100,11 @@ class Cell extends Component {
                             <feComposite operator="over" in="shadow" in2="SourceGraphic" />
                         </filter>
                     </defs>
+
+                    <polygon className="cell__fill" fill="url(#bg)" filter="url(#shadow)"
+                        points="21,5.2 36,13.9 36,20.2 36,31.2 21,39.8 6,31.2 6,13.9" />
+
+                    {/*<text x="10" y="25" fontSize={10}>{this.props.colIndex},{this.props.rowIndex}</text>*/}
 
                     <polygon id="w"
                         className={classNames('cell__border', 'cell__border--nw', {
@@ -137,11 +142,6 @@ class Cell extends Component {
                             'cell__border--available': this.props.availableOrientations.indexOf('se') > -1
                         })}
                         points="24,45 21,43.3 21,39.8 36,31.2 39,32.9 39,36.4" />
-
-
-                    <polygon className="cell__fill" fill="url(#bg)" filter="url(#shadow)"
-                        points="21,5.2 36,13.9 36,20.2 36,31.2 21,39.8 6,31.2 6,13.9" />
-
                 </svg>
             </div>
         )

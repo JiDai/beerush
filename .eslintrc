@@ -28,11 +28,14 @@
     ],
     "rules": {
         // Disable `no-console` rule
-        "no-console": 2,
+        "no-console": 1,
         "no-alert": 2,
         "no-debugger": 2,
         // Give a warning if identifiers contain underscores
-        "no-underscore-dangle": 2,
+        "no-underscore-dangle": ["error", {
+            "allowAfterThis": true,
+            "allowAfterSuper": true
+        }],
         // Default to single quotes and raise an error if something
         // else is used
         "quotes": [
