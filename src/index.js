@@ -2,20 +2,14 @@
  * Created by jd on 16/07/16.
  */
 import React from 'react'
-import ReactDOM from 'react-dom'
+import {render} from 'react-dom'
 import {compose, createStore, applyMiddleware, combineReducers} from 'redux'
-import {Provider} from 'react-redux'
-import {Router, Route, IndexRoute, browserHistory} from 'react-router'
-import {syncHistoryWithStore, routerReducer} from 'react-router-redux'
+import {routerReducer} from 'react-router-redux'
 import thunkMiddleware from 'redux-thunk'
+import {AppContainer} from 'react-hot-loader'
 
-import App from './containers/App'
-import MainMenu from './containers/MainMenu'
-import Game from './containers/Game'
+import Root from './containers/Root'
 import * as reducers from './reducers'
-
-// load styles
-import './styles/main.scss'
 
 
 // Add the reducer to your store on the `routing` key
@@ -30,16 +24,21 @@ const store = createStore(
     )
 )
 
-const history = syncHistoryWithStore(browserHistory, store)
-
-ReactDOM.render(
-    <Provider store={store}>
-        <Router history={history}>
-            <Route path="/" component={App}>
-                <IndexRoute component={MainMenu}/>
-                <Route path={'game'} component={Game}/>
-                <Route path={'game'} component={Game}/>
-            </Route>
-        </Router>
-    </Provider>, document.getElementById('root')
+render(
+    <AppContainer>
+        <Root store={store} />
+    </AppContainer>,
+    document.getElementById('root')
 )
+
+if (module.hot) {
+    module.hot.accept('./containers/Root', () => {
+        render(
+            <AppContainer
+                component={require('./containers/Root').default}
+                props={{store}}
+            />,
+            document.getElementById('root')
+        )
+    })
+}
