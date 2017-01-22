@@ -1,7 +1,9 @@
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.config');
 var path = require('path');
+
+var config = require('./webpack.config')
+
 
 new WebpackDevServer(webpack(config), {
     contentBase: path.join(__dirname, '..', 'src'),
@@ -10,11 +12,12 @@ new WebpackDevServer(webpack(config), {
     hot: true,
     inline: true,
     stats: {
-        colors: true
+        colors: true,
+        errorDetails: true
     },
-}).listen(config.devServerPort, config.devServerHost, function (err, result) {
+}).listen(process.env.WEBPACK_PORT, process.env.WEBPACK_HOST, function (err/*, result*/) {
     if (err) {
         console.log(err);
     }
-    console.log('Listening at ' + config.devServerHost + ':' + config.devServerPort);
+    console.log('Listening at ' + process.env.WEBPACK_HOST + ':' + process.env.WEBPACK_PORT);
 });

@@ -1,40 +1,27 @@
-/**
- * Created by jd on 16/01/2017.
- */
 import React, {Component, PropTypes} from 'react'
 import {Provider} from 'react-redux'
-import {Router, Route, IndexRoute, browserHistory} from 'react-router'
+import {browserHistory} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 
-import App from './App'
-import MainMenu from './MainMenu'
-import Game from './Game'
-
-// load styles
-import '../styles/main.scss'
+import getRouter from '../router'
 
 
-class Root extends Component {
+export default class Root extends Component {
     static propTypes = {
         store: PropTypes.object
     }
 
+    constructor (props) {
+        super()
+        this.store = props.store
+        this.history = syncHistoryWithStore(browserHistory, props.store)
+    }
+
     render () {
-        const {store} = this.props
-        const history = syncHistoryWithStore(browserHistory, store)
         return (
-            <Provider store={store}>
-                <Router history={history}>
-                    <Route path="/" component={App}>
-                        <IndexRoute component={MainMenu} />
-                        <Route path={'game'} component={Game} />
-                        <Route path={'game'} component={Game} />
-                    </Route>
-                </Router>
+            <Provider store={this.store}>
+                {getRouter(this.history)}
             </Provider>
         )
     }
 }
-
-
-export default Root

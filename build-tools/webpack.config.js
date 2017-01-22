@@ -1,23 +1,24 @@
 var path = require('path')
 var webpack = require('webpack')
 
-var devServerHost = process.env.WEBPACK_HOST || '0.0.0.0'
-var devServerPort = process.env.WEBPACK_PORT || '3000'
 
 module.exports = {
-    devServerHost: devServerHost,
-    devServerPort: devServerPort,
     devtool: 'eval',
     entry: {
         index: [
-            // Enable automatic refresh https://webpack.github.io/docs/webpack-dev-server.html#automatic-refresh
-            'webpack-dev-server/client?http://' + devServerHost + ':' + devServerPort,
-            // Enable Hot Module Replacement
-            'webpack/hot/only-dev-server',
-            // Enable React hot loader for HMR
             'react-hot-loader/patch',
-            // Main file : entry point of application
+            // activate HMR for React
+
+            'webpack-dev-server/client?http://' + process.env.WEBPACK_HOST + ':' + process.env.WEBPACK_PORT,
+            // bundle the client for webpack-dev-server
+            // and connect to the provided endpoint
+
+            'webpack/hot/only-dev-server',
+            // bundle the client for hot reloading
+            // only- means to only hot reload for successful updates
+
             './src/index'
+            // Main file : entry point of application
         ]
     },
     output: {
@@ -29,39 +30,43 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
     ],
     module: {
-        preLoaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
                 loader: 'eslint-loader',
-                include: path.join(__dirname, '..', 'src')
-            }
-        ],
-        loaders: [
+                enforce: 'pre',
+                include: path.join(__dirname, '..', 'src'),
+                options: {
+                    configFile: './.eslintrc'
+                }
+            },
             {
                 test: /\.(png|gif|jpg|woff|woff2|eot|ttf|svg)$/,
-                loader: 'url-loader?limit=100000'
-            },
-            {
+                loader: 'url-loader',
+                options: {limit: 100000}
+            }, {
                 test: /\.scss$/,
-                loaders: ['style-loader', 'css-loader', 'sass-loader']
-            },
-            {
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader'
+                ]
+            }, {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
-                query: {
+                options: {
                     cacheDirectory: true
                 },
                 exclude: /node_modules/,
                 include: path.join(__dirname, '..', 'src')
             }, {
-                test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=200000'
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                loader: 'url-loader',
+                options: {limit: 200000}
             }]
     },
     resolve: {
-        extensions: ['', '.js', '.jsx'],
-        modulesDirectories: ['src', 'node_modules', 'styles']
-    },
-    eslint: {
-        configFile: './.eslintrc'
+        extensions: ['.js', '.jsx'],
+        modules: ['src', 'node_modules', 'styles']
     }
 }
