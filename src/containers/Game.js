@@ -3,7 +3,7 @@ import Component from 'react/lib/ReactComponent'
 import PropTypes from 'react/lib/ReactPropTypes'
 import {connect} from 'react-redux'
 
-import {validatePath, unvalidatePath} from '../actions/game'
+import {validatePath, unvalidatePath, setNewGame} from '../actions/game'
 import CellGrid from '../components/CellGrid'
 import PathGrid from '../components/PathGrid'
 
@@ -21,6 +21,10 @@ class Game extends Component {
             pathValidating: null,
             waitForPathValidation: false,
         }
+    }
+
+    componentWillMount () {
+        this.props.dispatch(setNewGame())
     }
 
     confirmPath = () => {

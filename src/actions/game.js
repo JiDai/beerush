@@ -1,7 +1,14 @@
 export const SELECT_EDGE = 'SELECT_EDGE'
 export const UNVALIDATE_PATH = 'UNVALIDATE_PATH'
 export const VALIDATE_PATH = 'VALIDATE_PATH'
+export const SET_NEW_GAME = 'SET_NEW_GAME'
 
+
+function setNewGame () {
+    return {
+        type: SET_NEW_GAME
+    }
+}
 
 function selectEdge (colIndex, rowIndex, direction) {
     return {
@@ -29,6 +36,7 @@ function validatePath () {
 
 
 export {
+    setNewGame,
     selectEdge,
     unvalidatePath,
     validatePath
