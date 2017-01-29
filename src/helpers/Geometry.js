@@ -3,7 +3,7 @@ import {
     DEFAULT_AVAILABLE_PATH,
     ORIENTATION_VERTICAL,
     ORIENTATION_OBLIQUE_UP,
-    ORIENTATION_OBLIQUE_DOWN,
+    ORIENTATION_OBLIQUE_DOWN
 } from '../Constants'
 import Path from '../model/Path'
 
@@ -100,8 +100,20 @@ function getPathCoordinatesFromCellEdge (cellColIndex, cellRowIndex, direction) 
             throw new Error(`Not a valid selected path ${cellColIndex}, ${cellRowIndex}, ${direction}`)
     }
 
-    const path = new Path(coordinates.column, coordinates.row, getOrienationFromDirection(direction))
+    const path = {column: coordinates.column, row: coordinates.row}
     return path
+}
+
+/**
+ *
+ * @param path
+ * @returns {Array}
+ */
+function getAllAdjacentCells (path) {
+    return [{
+        row: Math.round(path.row / 4),
+        column: Math.round(path.column / 2)
+    }]
 }
 
 /**
@@ -151,33 +163,16 @@ function getAdjacentPaths (path) {
     return adjacentPaths
 }
 
-function getDefaultAvailablePaths() {
+function getDefaultAvailablePaths () {
     return DEFAULT_AVAILABLE_PATH.map(path => new Path(path.column, path.row, path.orientation))
 }
 
-
-/**
- *
- * @param direction
- */
-function getOrienationFromDirection (direction) {
-    switch (direction) {
-        case 'nw':
-        case 'se':
-            return ORIENTATION_OBLIQUE_UP
-        case 'ne':
-        case 'sw':
-            return ORIENTATION_OBLIQUE_DOWN
-        case 'e':
-        case 'w':
-            return ORIENTATION_VERTICAL
-    }
-}
 
 export {
     getDirection,
     getPathCoordinatesFromCellEdge,
     getDefaultAvailablePaths,
     getAllAdjacentPaths,
-    getAdjacentPaths
+    getAdjacentPaths,
+    getAllAdjacentCells
 }

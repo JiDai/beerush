@@ -21,8 +21,6 @@ class Cell extends Component {
     static propTypes = {
         onEdgeSelection: PropTypes.func,
         availableOrientations: PropTypes.array,
-        validatedPaths: PropTypes.array,
-        selectedPath: PropTypes.object,
         status: PropTypes.string,
         index: PropTypes.number,
         colIndex: PropTypes.number,
@@ -36,12 +34,18 @@ class Cell extends Component {
     }
 
     onMouseDown = () => {
+        if(this.props.start) {
+            return
+        }
         this.setState({
             selected: true
         })
     }
 
     onMouseUp = (event) => {
+        if(this.props.start) {
+            return
+        }
         const rect = event.currentTarget.getBoundingClientRect()
         const direction = getDirection(rect, event.clientX, event.clientY)
         this.setState({
@@ -57,6 +61,9 @@ class Cell extends Component {
     }
 
     onMouseMove = (event) => {
+        if(this.props.start) {
+            return
+        }
         if (!this.state.selected) {
             return
         }

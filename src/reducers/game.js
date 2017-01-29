@@ -4,18 +4,23 @@ import {
     getDefaultAvailablePaths
 } from '../helpers/Geometry'
 import {
+    SET_NEW_GAME,
     SELECT_EDGE,
     UNVALIDATE_PATH,
     VALIDATE_PATH
 } from '../actions/game'
 import {
+    CELL_MATRIX,
+    PATH_MATRIX,
     PLAYERS_COUNT
 } from '../Constants'
+import Cell from '../model/Cell'
+import Path from '../model/Path'
 
 
 const initialState = {
-    validatedPaths: [],
-    availablePaths: getDefaultAvailablePaths(),
+    cells: [],
+    paths: [],
     selectedPath: null,
     currentPlayer: 1,
     round: 1
@@ -24,25 +29,69 @@ const initialState = {
 
 function gameReducer (state = initialState, action) {
     switch (action.type) {
-        case SELECT_EDGE: {
-            const selectedPath = getPathCoordinatesFromCellEdge(action.colIndex, action.rowIndex, action.direction)
-            const selectedPathAvailable = state.availablePaths.find(path => {
-                return path.isEqualTo(selectedPath)
+        case SET_NEW_GAME: {
+            let cells = []
+            let paths = []
+
+            CELL_MATRIX.forEach((row, rowIndex) => {
+                row.forEach((status, colIndex) => {
+                    switch (status) {
+                        case 1:
+                            cells.push(new Cell(colIndex, rowIndex))
+                            break
+                        case 2:
+                            cells.push(new Cell(colIndex, rowIndex, true))
+                            break
+                        default:
+                            break
+                    }
+                })
+            })
+
+            PATH_MATRIX.forEach((row, rowIndex) => {
+                row.forEach((orientation, colIndex) => {
+                    if(orientation === 0) {
+                        return
+                    }
+                    const defaults = getDefaultAvailablePaths()
+                    const available = defaults.find(path => {
+                        return rowIndex === path.row && colIndex === path.column
+                    })
+                    paths.push(new Path(colIndex, rowIndex, orientation, !!available))
+                })
             })
 
             return {
                 ...state,
-                selectedPath: selectedPathAvailable
+                cells,
+                paths
             }
         }
-        case VALIDATE_PATH: {
-            let availablePaths = state.availablePaths.filter(function (path) {
-                return !path.isEqualTo(state.selectedPath)
+
+        case SELECT_EDGE: {
+            const coordinates = getPathCoordinatesFromCellEdge(action.colIndex, action.rowIndex, action.direction)
+            const selectedPath = state.paths.find(path => {
+                return path.isEqualTo({column: coordinates.column, row: coordinates.row})
             })
 
+            // Check if path is availabe
+            if(!selectedPath.available) {
+                return state
+            }
+
+            // Mark path as selected to highlight it
+            selectedPath.selected = true
+
+            return {
+                ...state,
+                selectedPath
+            }
+        }
+
+        case VALIDATE_PATH: {
             const selectedPath = state.selectedPath
-            selectedPath.playerId = state.currentPlayer
-            let validatedPaths = state.validatedPaths.concat(selectedPath)
+            selectedPath.validatedBy = state.currentPlayer
+            selectedPath.available = false
 
             let currentPlayer, round
             // Next round ?
@@ -55,27 +104,34 @@ function gameReducer (state = initialState, action) {
                 round = state.round
             }
 
-            if (round > 1) {
-                // Find last validated path by current player
-                const lastValidatedPathsByPlayer = state.validatedPaths.filter(function (path) {
-                    return currentPlayer === path.playerId
-                })
-                availablePaths = getAllAdjacentPaths(lastValidatedPathsByPlayer)
-                availablePaths = availablePaths.filter(availablePath => {
-                    return !state.validatedPaths.find(function (path) {
-                        return path.isEqualTo(availablePath)
-                    })
-                })
-            }
-
-            return {
+            let newState = {
                 ...state,
-                validatedPaths,
-                availablePaths,
                 selectedPath: null,
                 currentPlayer,
                 round
             }
+
+            if (round > 1) {
+                // Find last validated path by current player
+                const lastValidatedPathsByPlayer = state.paths.filter(function (path) {
+                    return currentPlayer === path.validatedBy
+                })
+
+                // Update availabe paths
+                const adjacentPaths = getAllAdjacentPaths(lastValidatedPathsByPlayer)
+                newState.paths = state.paths.map(path => {
+                    path.available = false
+                    const isAdjacent = !!adjacentPaths.find(function (adjacentPath) {
+                        return adjacentPath.isEqualTo(path)
+                    })
+                    if(isAdjacent && !path.validatedBy) {
+                        path.available = true
+                    }
+                    return path
+                })
+            }
+
+            return newState
         }
         case UNVALIDATE_PATH:
             return {
