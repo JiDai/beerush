@@ -37,7 +37,8 @@ module.exports = {
                 enforce: 'pre',
                 include: path.join(__dirname, '..', 'src'),
                 options: {
-                    configFile: './.eslintrc'
+                    configFile: './.eslintrc',
+                    emitWarning: true
                 }
             },
             {

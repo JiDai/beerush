@@ -21,6 +21,6 @@ export default function () {
             toLog.push(arguments[arg])
         }
     }
-    //noinspection Eslint
+    // eslint-disable-next-line no-console
     console.log.apply(null, toLog)
 }

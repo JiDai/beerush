@@ -1,0 +1,9 @@
+--require ./tests/mocha-setup
+--recursive
+--watch-extensions jsx
+--full-trace
+--colors
+--check-leaks
+--sort
+--compilers js:babel-core/register
+
