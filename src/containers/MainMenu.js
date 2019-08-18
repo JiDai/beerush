@@ -1,16 +1,15 @@
-import React from 'react'
-import Component from 'react/lib/ReactComponent'
-import Link from 'react-router/lib/Link'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class MainMenu extends Component {
-    static propTypes = {}
+    static propTypes = {};
 
-    render () {
+    render() {
         return (<div>
             <Link to={'/'}>Home</Link>
             <Link to={'/game'}>Nouvelle partie</Link>
-        </div>)
+        </div>);
     }
 }
 
-export default MainMenu
+export default MainMenu;

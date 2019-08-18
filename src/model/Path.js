@@ -6,11 +6,11 @@ import {
     ORIENTATION_VERTICAL,
     ORIENTATION_OBLIQUE_UP,
     ORIENTATION_OBLIQUE_DOWN,
-} from '../Constants'
+} from '../Constants';
 
 import {
     ReadOnlyPropertyError,
-} from '../Errors'
+} from '../Errors';
 
 
 class Path {
@@ -19,54 +19,54 @@ class Path {
      * @type {Number}
      * @private
      */
-    _validatedBy = null
+    _validatedBy = null;
 
     /**
      * @type {Number}
      * @private
      */
-    _column = null
+    _column = null;
 
     /**
      * @type {Number}
      * @private
      */
-    _row = null
+    _row = null;
 
     /**
      * @type {Number}
      * @private
      */
-    _orientation = null
+    _orientation = null;
 
     /**
      * @type {Boolean}
      */
-    available = false
+    available = false;
 
     /**
      * @type {Boolean}
      */
-    selected = false
+    selected = false;
 
 
-    constructor (column, row, orientation, available = false) {
+    constructor(column, row, orientation, available = false) {
         if (column == null || !Number.isInteger(column)) {
-            throw new Error('`column` must be a Number to create `Path`')
+            throw new Error('`column` must be a Number to create `Path`');
         }
         if (row == null || !Number.isInteger(row)) {
-            throw new Error('`row` must be a Number to create `Path`')
+            throw new Error('`row` must be a Number to create `Path`');
         }
         if (orientation === null
             || !Number.isInteger(orientation)
             || [ORIENTATION_VERTICAL, ORIENTATION_OBLIQUE_UP, ORIENTATION_OBLIQUE_DOWN].indexOf(orientation) === -1) {
-            throw new Error('`orientation` must be a valid Number to create `Path`, given : ' + orientation)
+            throw new Error('`orientation` must be a valid Number to create `Path`, given : ' + orientation);
         }
-        this._column = column
-        this._row = row
-        this._orientation = orientation
-        this.available = available
-        return this
+        this._column = column;
+        this._row = row;
+        this._orientation = orientation;
+        this.available = available;
+        return this;
     }
 
     /**
@@ -74,17 +74,17 @@ class Path {
      * @param anotherPath
      * @returns {boolean}
      */
-    isEqualTo (anotherPath) {
+    isEqualTo(anotherPath) {
         return this._column === anotherPath.column
-            && this._row === anotherPath.row
+            && this._row === anotherPath.row;
     }
 
     /**
      *
      * @returns {Number}
      */
-    get column () {
-        return this._column
+    get column() {
+        return this._column;
     }
 
     /**
@@ -93,16 +93,16 @@ class Path {
      * @throws {ReadOnlyPropertyError} Inconditionally.
      * @return {void}
      */
-    set column (value) {
-        throw new ReadOnlyPropertyError('column', value)
+    set column(value) {
+        throw new ReadOnlyPropertyError('column', value);
     }
 
     /**
      *
      * @returns {Number}
      */
-    get row () {
-        return this._row
+    get row() {
+        return this._row;
     }
 
     /**
@@ -111,16 +111,16 @@ class Path {
      * @throws {ReadOnlyPropertyError} Inconditionally.
      * @return {void}
      */
-    set row (value) {
-        throw new ReadOnlyPropertyError('row', value)
+    set row(value) {
+        throw new ReadOnlyPropertyError('row', value);
     }
 
     /**
      *
      * @returns {Number}
      */
-    get orientation () {
-        return this._orientation
+    get orientation() {
+        return this._orientation;
     }
 
     /**
@@ -129,37 +129,37 @@ class Path {
      * @throws {ReadOnlyPropertyError} Inconditionally.
      * @return {void}
      */
-    set orientation (value) {
-        throw new ReadOnlyPropertyError('orientation', value)
+    set orientation(value) {
+        throw new ReadOnlyPropertyError('orientation', value);
     }
 
     /**
      *
      * @param {Number} validatedBy
      */
-    set validatedBy (validatedBy) {
+    set validatedBy(validatedBy) {
         if (isNaN(validatedBy)) {
-            throw new Error('Argument provided to `Path.validatedBy` is not a valid integer')
+            throw new Error('Argument provided to `Path.validatedBy` is not a valid integer');
         }
-        this._validatedBy = validatedBy
-        return this
+        this._validatedBy = validatedBy;
+        return this;
     }
 
     /**
      *
      * @returns {Number}
      */
-    get validatedBy () {
-        return this._validatedBy
+    get validatedBy() {
+        return this._validatedBy;
     }
 
-    toString () {
-        return `column: ${this._column}, row: ${this._row}, orientation: ${this._orientation}, validatedBy: ${this._validatedBy}`
+    toString() {
+        return `column: ${this._column}, row: ${this._row}, orientation: ${this._orientation}, validatedBy: ${this._validatedBy}`;
     }
 
-    toLog () {
-        return this.toString()
+    toLog() {
+        return this.toString();
     }
 }
 
-export default Path
+export default Path;

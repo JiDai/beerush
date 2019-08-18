@@ -3,7 +3,7 @@
  */
 
 export class ReadOnlyPropertyError extends Error {
-    constructor (property, value) {
-        super(`The ${property} property cannot be written. ${value} was passed.`)
+    constructor(property, value) {
+        super(`The ${property} property cannot be written. ${value} was passed.`);
     }
 }

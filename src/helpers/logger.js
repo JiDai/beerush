@@ -3,24 +3,22 @@
  */
 
 export default function () {
-    let toLog = []
-    for(let arg in arguments) {
-        if(Array.isArray(arguments[arg])) {
-            let arrayToLog = []
+    let toLog = [];
+    for (let arg in arguments) {
+        if (Array.isArray(arguments[arg])) {
+            let arrayToLog = [];
             for (let i in arguments[arg]) {
-                if(arguments[arg][i].toLog) {
-                    arguments[arg][i].toLog()
-                }
-                else {
-                    arrayToLog.push(arguments[arg][i])
+                if (arguments[arg][i].toLog) {
+                    arguments[arg][i].toLog();
+                } else {
+                    arrayToLog.push(arguments[arg][i]);
                 }
             }
-            toLog.push(arrayToLog)
-        }
-        else {
-            toLog.push(arguments[arg])
+            toLog.push(arrayToLog);
+        } else {
+            toLog.push(arguments[arg]);
         }
     }
     //noinspection Eslint
-    console.log.apply(null, toLog)
+    console.log.apply(null, toLog);
 }

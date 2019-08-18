@@ -1,19 +1,18 @@
-import React from 'react'
-import Component from 'react/lib/ReactComponent'
-import {connect} from 'react-redux'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import '../styles/main.scss'
+import '../styles/main.scss';
 
 
 class App extends Component {
-    render () {
+    render() {
         return (
             <div>
                 {this.props.children}
             </div>
-        )
+        );
     }
 }
 
 // Link state to props
-export default connect()(App)
+export default connect()(App);

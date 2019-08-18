@@ -1,27 +1,38 @@
-import React, {Component, PropTypes} from 'react'
-import {Provider} from 'react-redux'
-import {browserHistory} from 'react-router'
-import {syncHistoryWithStore} from 'react-router-redux'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
 
-import getRouter from '../router'
+import history from '../AppHistory';
+import AppRouting from '../AppRouting';
+import initStore from '../store';
 
 
+/**
+ * Root Component.
+ */
 export default class Root extends Component {
-    static propTypes = {
-        store: PropTypes.object
+    /**
+     * Creates an instance of Root.
+     * @param {Object} props Component props
+     */
+    constructor(props) {
+        super(props);
+
+        this.store = initStore({});
     }
 
-    constructor (props) {
-        super()
-        this.store = props.store
-        this.history = syncHistoryWithStore(browserHistory, props.store)
-    }
-
-    render () {
+    /**
+     * React lifecycle.
+     */
+    render() {
         return (
             <Provider store={this.store}>
-                {getRouter(this.history)}
+                <AppRouting history={history} />
             </Provider>
-        )
+        );
     }
 }
+
+Root.propTypes = {
+    store: PropTypes.shape({}),
+};

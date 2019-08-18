@@ -1,41 +1,40 @@
-import React from 'react'
-import Component from 'react/lib/ReactComponent'
-import PropTypes from 'react/lib/ReactPropTypes'
-import {connect} from 'react-redux'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import {validatePath, unvalidatePath, setNewGame} from '../actions/game'
-import CellGrid from '../components/CellGrid'
-import PathGrid from '../components/PathGrid'
+import { validatePath, unvalidatePath, setNewGame } from '../actions/game';
+import CellGrid from '../components/CellGrid';
+import PathGrid from '../components/PathGrid';
 
 
 class Game extends Component {
     static propTypes = {
         selectedPath: PropTypes.object,
-        currentPlayer: PropTypes.number
-    }
+        currentPlayer: PropTypes.number,
+    };
 
-    constructor () {
-        super()
+    constructor(props) {
+        super(props);
         this.state = {
             selectedCellIndex: null,
             pathValidating: null,
             waitForPathValidation: false,
-        }
+        };
     }
 
-    componentWillMount () {
-        this.props.dispatch(setNewGame())
+    componentWillMount() {
+        this.props.dispatch(setNewGame());
     }
 
     confirmPath = () => {
-        this.props.dispatch(validatePath())
-    }
+        this.props.dispatch(validatePath());
+    };
 
     cancelPath = () => {
-        this.props.dispatch(unvalidatePath())
-    }
+        this.props.dispatch(unvalidatePath());
+    };
 
-    render () {
+    render() {
         return (
             <div>
                 <h1>BeeRush</h1>
@@ -49,7 +48,7 @@ class Game extends Component {
                     <button onClick={this.cancelPath}>No, wait!</button>
                 </div>}
             </div>
-        )
+        );
     }
 }
 
@@ -57,7 +56,7 @@ export default connect(
     state => {
         return {
             currentPlayer: state.game.currentPlayer,
-            selectedPath: state.game.selectedPath
-        }
-    }
-)(Game)
+            selectedPath: state.game.selectedPath,
+        };
+    },
+)(Game);
