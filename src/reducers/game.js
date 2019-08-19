@@ -110,7 +110,15 @@ function gameReducer(state = initialState, action) {
                 round,
             };
 
-            if (round > 1) {
+            if (round === 1) {
+                newState.paths = state.paths.map(path => {
+                    if (selectedPath.isEqualTo(path)) {
+                        path.validatedBy = selectedPath.validatedBy;
+                        path.available = false
+                    }
+                    return path;
+                });
+            } else if (round > 1) {
                 // Find last validated path by current player
                 const lastValidatedPathsByPlayer = state.paths.filter(function (path) {
                     return currentPlayer === path.validatedBy;
