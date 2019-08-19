@@ -4,7 +4,7 @@ import { Route, Router } from 'react-router';
 
 import App from './containers/App';
 import Game from './containers/Game';
-import MainMenu from './containers/MainMenu';
+import Home from './containers/Home';
 
 /**
  * Routing component.
@@ -16,7 +16,7 @@ export function AppRouting({ history }) {
         <ConnectedRouter history={history}>
             <Router history={history}>
                 <App>
-                    <Route exact path="/" component={MainMenu} />
+                    <Route exact path="/" component={Home} />
                     <Route exact path="/game" component={Game} />
                 </App>
             </Router>

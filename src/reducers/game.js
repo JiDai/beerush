@@ -118,6 +118,8 @@ function gameReducer(state = initialState, action) {
                     }
                     return path;
                 });
+
+
             } else if (round > 1) {
                 // Find last validated path by current player
                 const lastValidatedPathsByPlayer = state.paths.filter(function (path) {

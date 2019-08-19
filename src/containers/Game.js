@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { validatePath, unvalidatePath, setNewGame } from '../actions/game';
 import CellGrid from '../components/CellGrid';
 import PathGrid from '../components/PathGrid';
+import { PLAYERS_COUNT } from '../Constants';
 
 
 class Game extends Component {
@@ -38,7 +39,7 @@ class Game extends Component {
         return (
             <div>
                 <h1>BeeRush</h1>
-                <p>Joueur : {this.props.currentPlayer}</p>
+                <p>Joueur : {this.props.currentPlayer}/{PLAYERS_COUNT}</p>
                 <div className="game-area">
                     <CellGrid />
                     <PathGrid />

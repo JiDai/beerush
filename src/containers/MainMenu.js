@@ -5,9 +5,9 @@ class MainMenu extends Component {
     static propTypes = {};
 
     render() {
-        return (<div>
-            <Link to={'/'}>Home</Link>
-            <Link to={'/game'}>Nouvelle partie</Link>
+        return (<div className="main-menu">
+            <Link className="main-menu__item" to={'/'}>Home</Link>
+            <Link className="main-menu__item" to={'/game'}>Nouvelle partie</Link>
         </div>);
     }
 }
