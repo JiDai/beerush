@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConnectedRouter } from 'connected-react-router';
-import { Route, Router } from 'react-router';
+import { Route, Router, Switch } from 'react-router';
 
 import App from './containers/App';
 import Game from './containers/Game';
@@ -17,9 +17,11 @@ export function AppRouting({ history }) {
         <ConnectedRouter history={history}>
             <Router history={history}>
                 <App>
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/game" component={Game} />
-                    <Route exact path='*' component={NotFound} />
+                    <Switch>
+                        <Route exact path="/" component={Home} />
+                        <Route exact path="/game" component={Game} />
+                        <Route exact path='*' component={NotFound} />
+                    </Switch>
                 </App>
             </Router>
         </ConnectedRouter>
