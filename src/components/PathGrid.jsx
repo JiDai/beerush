@@ -38,6 +38,24 @@ class PathGrid extends Component {
                 'path__fill--validated': !!path.validatedBy,
                 [`path__fill--validated-by-${path.validatedBy}`]: !!path.validatedBy,
             });
+            const pattern =
+                <defs>
+                    <pattern
+                        id="pattern1"
+                        x="0"
+                        y="0"
+                        width="4"
+                        height="4"
+                        patternUnits="userSpaceOnUse"
+                    >
+                        <circle
+                            cx="2"
+                            cy="2"
+                            r="2"
+                            style={{ stroke: 'none', fill: '#999' }}
+                        />
+                    </pattern>
+                </defs>;
 
             switch (path.orientation) {
                 case ORIENTATION_OBLIQUE_DOWN :
@@ -49,10 +67,10 @@ class PathGrid extends Component {
                             width={18}
                             height={13.9}
                             viewBox={`0 0 ${18} ${13.9}`}>
+                            {pattern}
                             <polygon
                                 className={classes}
                                 points="18,12.1 15,13.9 0,5.2 0,1.7 3,0 18,8.7" />
-                            {/*<text x={3} y={4} transform="rotate(30)" fontSize={6}>{colIndex},<br />{rowIndex}</text>*/}
                         </svg>);
                     break;
                 case ORIENTATION_OBLIQUE_UP :
@@ -64,10 +82,10 @@ class PathGrid extends Component {
                             width={18}
                             height={13.9}
                             viewBox={`0 0 ${18} ${13.9}`}>
+                            {pattern}
                             <polygon
                                 className={classes}
                                 points="0,12.1 0,8.7 15,0 18,1.7 18,5.2 3,13.9" />
-                            {/*<text x={-4} y={13} transform="rotate(-30)" fontSize={6}>{colIndex},<br />{rowIndex}</text>*/}
                         </svg>);
                     break;
                 case ORIENTATION_VERTICAL:
@@ -81,10 +99,10 @@ class PathGrid extends Component {
                             width={6}
                             height={20.8}
                             viewBox={`0 0 ${6} ${20.8}`}>
+                            {pattern}
                             <polygon
                                 className={classes}
                                 points="3,0 6,1.73 6,19.08 3,20.81 0,19.08 0,1.73" />
-                            {/*<text x={-18} y={5} transform="rotate(-90)" fontSize={6}>{colIndex},<br />{rowIndex}</text>*/}
                         </svg>);
                     break;
                 default:

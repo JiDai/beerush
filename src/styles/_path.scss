@@ -11,7 +11,7 @@
 
 .path__fill--available {
     fill-opacity: 1;
-    fill: #3de5d9;
+    fill: url(#pattern1)
 }
 
 .path__fill--selected {
@@ -48,7 +48,7 @@
 }
 
 .path__fill--selected {
-    animation-duration: 3s;
+    animation-duration: 1s;
     animation-name: scales;
     animation-iteration-count: infinite;
     transform: scale(2.0);

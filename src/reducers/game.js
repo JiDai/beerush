@@ -117,6 +117,7 @@ function gameReducer(state = initialState, action) {
 
             if (round === 1) {
                 newState.paths = state.paths.map(path => {
+                    path.selected = false;
                     if (selectedPath.isEqualTo(path)) {
                         path.validatedBy = selectedPath.validatedBy;
                         path.available = false;
@@ -135,6 +136,7 @@ function gameReducer(state = initialState, action) {
                 const adjacentPaths = getAllAdjacentPaths(lastValidatedPathsByPlayer);
                 newState.paths = state.paths.map(path => {
                     path.available = false;
+                    path.selected = false;
                     const isAdjacent = !!adjacentPaths.find(function (adjacentPath) {
                         return adjacentPath.isEqualTo(path);
                     });

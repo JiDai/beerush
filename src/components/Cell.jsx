@@ -112,8 +112,6 @@ class Cell extends Component {
                     <polygon className="cell__fill" fill="url(#bg)" filter="url(#shadow)"
                         points="21,5.2 36,13.9 36,20.2 36,31.2 21,39.8 6,31.2 6,13.9" />
 
-                    {/*<text x="10" y="25" fontSize={10}>{this.props.colIndex},{this.props.rowIndex}</text>*/}
-
                     <polygon id="w"
                         className={classNames('cell__border', 'cell__border--nw', {
                             'cell__border--selected': this.state.edgeSelected === 'w',
