@@ -69,23 +69,28 @@ function gameReducer(state = initialState, action) {
         }
 
         case SELECT_EDGE: {
+            let newState = {
+                ...state,
+                selectedPath: null,
+            };
+
             const coordinates = getPathCoordinatesFromCellEdge(action.colIndex, action.rowIndex, action.direction);
-            const selectedPath = state.paths.find(path => {
-                return path.isEqualTo({ column: coordinates.column, row: coordinates.row });
+            newState.paths = state.paths.map(path => {
+                if (path.isEqualTo({ column: coordinates.column, row: coordinates.row })) {
+                    path.selected = true;
+                    newState.selectedPath = path;
+                } else {
+                    path.selected = false;
+                }
+                return path;
             });
 
             // Check if path is availabe
-            if (!selectedPath.available) {
+            if (!newState.selectedPath.available) {
                 return state;
             }
 
-            // Mark path as selected to highlight it
-            selectedPath.selected = true;
-
-            return {
-                ...state,
-                selectedPath,
-            };
+            return newState;
         }
 
         case VALIDATE_PATH: {
@@ -114,7 +119,7 @@ function gameReducer(state = initialState, action) {
                 newState.paths = state.paths.map(path => {
                     if (selectedPath.isEqualTo(path)) {
                         path.validatedBy = selectedPath.validatedBy;
-                        path.available = false
+                        path.available = false;
                     }
                     return path;
                 });
@@ -145,6 +150,10 @@ function gameReducer(state = initialState, action) {
         case UNVALIDATE_PATH:
             return {
                 ...state,
+                paths: state.paths.map(path => {
+                    path.selected = false;
+                    return path;
+                }),
                 selectedPath: null,
             };
         default:
