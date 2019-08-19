@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { validatePath, unvalidatePath, setNewGame } from '../actions/game';
 import CellGrid from '../components/CellGrid';
 import PathGrid from '../components/PathGrid';
+import Bee from '../components/svg/Bee';
 import { PLAYERS_COUNT } from '../Constants';
 
 
@@ -36,13 +37,24 @@ class Game extends Component {
     };
 
     render() {
+        const players = Array(PLAYERS_COUNT).fill().map((x, i) => 'Joueur ' + (i+1));
         return (
             <div>
                 <h1>BeeRush</h1>
-                <p>Joueur : {this.props.currentPlayer}/{PLAYERS_COUNT}</p>
-                <div className="game-area">
-                    <CellGrid />
-                    <PathGrid />
+                <div className="flex">
+                    <div>
+                    {players.map((player, i) =>
+                        <div className="flex flex-center margin-bottom" key={`BeePlayer${i}`}>
+                            <Bee width={24} colorClass={`player-${i+1}-color`} />
+                            <div className="margin-left">{player}</div>
+                            {this.props.currentPlayer === (i + 1) && <div className="margin-left">(en cours)</div>}
+                        </div>
+                    )}
+                    </div>
+                    <div className="game-area">
+                        <CellGrid />
+                        <PathGrid />
+                    </div>
                 </div>
                 {this.props.selectedPath && <div className="text-center margin-top-double">
                     <button className="button button--large margin-right" onClick={this.confirmPath}>OK ?</button>
