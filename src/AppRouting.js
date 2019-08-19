@@ -5,6 +5,7 @@ import { Route, Router } from 'react-router';
 import App from './containers/App';
 import Game from './containers/Game';
 import Home from './containers/Home';
+import NotFound from './containers/NotFound';
 
 /**
  * Routing component.
@@ -18,6 +19,7 @@ export function AppRouting({ history }) {
                 <App>
                     <Route exact path="/" component={Home} />
                     <Route exact path="/game" component={Game} />
+                    <Route exact path='*' component={NotFound} />
                 </App>
             </Router>
         </ConnectedRouter>
