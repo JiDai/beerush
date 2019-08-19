@@ -94,8 +94,9 @@ class Cell extends Component {
                     viewBox={`0 0 ${CELL_WIDTH + PATH_WIDTH * 2} ${CELL_HEIGHT + PATH_WIDTH * 2}`}>
                     <defs>
                         <radialGradient id="bg" cx="50%" cy="50%" r="55%" gradientUnits="objectBoundingBox">
-                            <stop offset="3%" style={{ 'stopColor': 'rgb(255, 250, 227)', 'stopOpacity': 1 }} />
-                            <stop offset="97%" style={{ 'stopColor': 'rgb(222, 185, 105)', 'stopOpacity': 1 }} />
+                            <stop offset="10%" style={{ 'stopColor': '#fef9dc', 'stopOpacity': 1 }} />
+                            <stop offset="85%" style={{ 'stopColor': '#cba35e', 'stopOpacity': 1 }} />
+                            <stop offset="92%" style={{ 'stopColor': '#ab8755', 'stopOpacity': 1 }} />
                         </radialGradient>
 
                         <filter id="shadow" primitiveUnits="objectBoundingBox" x="0%" y="0%">

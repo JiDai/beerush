@@ -1,0 +1,87 @@
+/* stylelint-disable-next-line comment-whitespace-inside, comment-empty-line-before */
+/*doc
+---
+parent: helpers
+title: Baseline
+name: baselinehelpers
+---
+
+Spacing helpers for all direction (top, left, bottom, right).
+Prefer use .baseline than margin-bottom for define the vertical rythm.
+Set a 1.5rem (from $base-margin) margin or padding for a given direction.
+
+You can suffix the class by `-double` for set 3em :
+
+You can suffix the class by `-sm` for small-only responsive width :
+
+```
+<div class="margin-left"></div>
+<div class="padding-left"></div>
+<div class="margin-left-double"></div>
+// ...
+
+```
+*/
+@each $direction in $directions {
+    .margin,
+    .margin-#{$direction} {
+        margin-#{$direction}: $spacing-unit;
+    }
+
+    .margin-#{$direction}-auto {
+        margin-#{$direction}: auto;
+    }
+
+    .margin-double,
+    .margin-#{$direction}-double {
+        margin-#{$direction}: $spacing-unit * 2;
+    }
+
+    .margin-half,
+    .margin-#{$direction}-half {
+        margin-#{$direction}: $spacing-unit/2;
+    }
+
+    .margin-small,
+    .margin-#{$direction}-small {
+        margin-#{$direction}: $spacing-unit/4;
+    }
+
+    .no-margin-#{$direction} {
+        margin-#{$direction}: 0 !important;
+    }
+
+    .padding,
+    .padding-#{$direction} {
+        padding-#{$direction}: $spacing-unit !important;
+    }
+
+    .padding-double,
+    .padding-#{$direction}-double {
+        padding-#{$direction}: $spacing-unit * 2 !important;
+    }
+
+    .padding-half,
+    .padding-#{$direction}-half {
+        padding-#{$direction}: $spacing-unit/2 !important;
+    }
+
+    .padding-small,
+    .padding-#{$direction}-small {
+        padding-#{$direction}: $spacing-unit/4;
+    }
+
+    .no-padding-#{$direction} {
+        padding-#{$direction}: 0 !important;
+    }
+}
+
+.no-margin,
+table.no-margin td {
+    margin: 0;
+}
+
+body .no-padding,
+body table.no-padding td {
+    padding: 0;
+}

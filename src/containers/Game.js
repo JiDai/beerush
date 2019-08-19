@@ -44,9 +44,9 @@ class Game extends Component {
                     <CellGrid />
                     <PathGrid />
                 </div>
-                {this.props.selectedPath && <div>
-                    <button onClick={this.confirmPath}>OK ?</button>
-                    <button onClick={this.cancelPath}>No, wait!</button>
+                {this.props.selectedPath && <div className="text-center margin-top-double">
+                    <button className="button button--large margin-right" onClick={this.confirmPath}>OK ?</button>
+                    <button className="button" onClick={this.cancelPath}>No, wait!</button>
                 </div>}
             </div>
         );

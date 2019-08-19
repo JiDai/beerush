@@ -3,13 +3,12 @@
     position: absolute;
     top: 100px;
     left: 100px;
-    z-index: 1;
-
+    z-index: $cell-zindex;
 }
 
 .cell--selected {
     transform: scale(3);
-    z-index: 2;
+    z-index: $cell-selected-zindex;
 }
 
 .cell__fill {

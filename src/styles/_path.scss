@@ -2,6 +2,7 @@
 .path {
     position: absolute;
     overflow: visible;
+    z-index: $path-zindex;
 }
 
 .path__fill {
@@ -20,29 +21,48 @@
 
 .path__fill--validated {
     fill-opacity: 1;
-    fill: #CC0;
 }
 
 .path__fill--validated-by-1 {
-    fill: #c000cc;
+    fill: $player-1-color;
 }
 
 .path__fill--validated-by-2 {
-    fill: #02cc00;
+    fill: $player-2-color;
 }
 
 .path__fill--validated-by-3 {
-    fill: #0019cc;
+    fill: $player-3-color;
 }
 
 .path__fill--validated-by-4 {
-    fill: #8c7ecb;
+    fill: $player-4-color;
 }
 
 .path__fill--validated-by-5 {
-    fill: #cc7f00;
+    fill: $player-5-color;
 }
 
 .path__fill--validated-by-6 {
-    fill: #becc00;
+    fill: $player-6-color;
+}
+
+.path__fill--selected {
+    animation-duration: 3s;
+    animation-name: scales;
+    animation-iteration-count: infinite;
+    transform: scale(2.0);
+    transform-origin: center;
+}
+
+@keyframes scales {
+    0% {
+        transform: scale(1.0);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1.0);
+    }
 }

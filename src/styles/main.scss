@@ -6,8 +6,17 @@ body {
 
 .game-area {
     position: relative;
+    height: 420px;
+    width: 400px;
+    margin: auto;
 }
 
+
+@import './variables';
+@import './helpers';
+
+@import './typography';
+@import './button';
 
 @import './cell';
 @import './path';
