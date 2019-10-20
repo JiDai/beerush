@@ -17,9 +17,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: GitHub Action for Yarn
-      uses: Borales/actions-yarn@v2.0.1
+    - uses: sergioramos/yarn-actions/install@master
       with:
-        cmd: install
-      env:
-        CI: true
+        frozen-lockfile: true
+    - name: Install Dependencies
+      run: npm install
+    - uses: codecov/codecov-action@v1.0.3
+      with:
+        token: ${{secrets.CODECOV_TOKEN}} #required
