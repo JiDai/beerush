@@ -17,11 +17,14 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: sergioramos/yarn-actions/install@master
+    - name: Install dependencies
+      uses: borales/actions-yarn@v2.0.0
       with:
-        frozen-lockfile: true
-    - name: Install Dependencies
-      run: npm install
+        cmd: install
+    - name: Test and coverage
+      uses: sergioramos/yarn-actions/install@master
+      with: 
+        cmd: run test:cover
     - uses: codecov/codecov-action@v1.0.3
       with:
         token: ${{secrets.CODECOV_TOKEN}} #required
