@@ -9,7 +9,7 @@
     "node-sass": "4.12.0",
     "prop-types": "latest",
     "react": "^16.9.0",
-    "react-dom": "^16.10.2",
+    "react-dom": "^16.11.0",
     "react-redux": "7.1.0",
     "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
